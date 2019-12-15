@@ -1,0 +1,66 @@
+body {
+  background-color: black;
+}
+
+div {
+  margin: 0 auto;
+  width: 70%;
+  height: 94%;
+}
+
+.block {
+  width: 100%;
+  border: 1px solid #60daaa;
+  border-radius: 5px;
+  margin: 1% 0;
+  background-color: #121212;
+}
+
+#timer {
+  height: 20%;
+  color: #60daaa;
+  font-size: 100px;
+  text-align: center;
+}
+
+#content {
+  height: 66%;
+  width: 96%;
+  color: #FFFFFF;
+  padding: 2%;
+  overflow-y: auto;
+  text-align: justify;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 4px;
+  margin: 100px;
+  height: 50px;
+  background-color: white;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #46a882;
+}
+
+#footer {
+  height: 10%;
+  text-align: center;
+}
+
+input[type=text] {
+  background-color: #121212;
+  color: #FFFFFF;
+  width: 95%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid #60daaa;
+}
+
+input:focus {
+  outline-width: 0;
+}
+
+/*# sourceMappingURL=style.css.map */
