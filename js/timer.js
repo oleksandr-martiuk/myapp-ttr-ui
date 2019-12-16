@@ -1,9 +1,25 @@
 let startTime = 28800; // TODO: 8 hours (in seconds)
+let timerState = false;
 
-setInterval(() => {
-   startTime--;
-   renderTimer(startTime);
-}, 1000);
+const toggleTimer = () => {
+   const runCheckbox = document.getElementById("runSlide");
+
+   if (runCheckbox.value === 'start') {
+      runCheckbox.value = 'pause';
+      clearInterval(timerState);
+      timerState = false;
+   } else {
+      runCheckbox.value = 'start';
+      launchTimer(startTime);
+   }
+};
+
+const launchTimer = (time) => {
+   timerState = setInterval(() => {
+      time--;
+      renderTimer(time);
+   }, 1000);
+};
 
 const renderTimer = (currentTime) => {
    const time = convertTime(currentTime);
@@ -30,3 +46,5 @@ const convertTime = (n) => {
 
    return time.hour + " : " + time.min + " : " + time.sec;
 };
+
+renderTimer(startTime); // run timer rendering when first time loads

@@ -4,18 +4,18 @@ let win;
 
 function createWindow () {
    win = new BrowserWindow({
-      icon: 'public/images/logo.ico',
-      fullscreenable: true,
+      // fullscreen: true,
+      width: 1000,
+      height: 700,
       center: true,
       autoHideMenuBar: true,
       webPreferences: {
          nodeIntegration: true
-      }
+      },
+      icon: 'public/images/logo.ico'
    });
 
    win.loadFile('index.html');
-
-   win.webContents.openDevTools();
 
    win.on('closed', () => {
       win = null;

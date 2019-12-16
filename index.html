@@ -5,58 +5,36 @@
       <title>Task Time Tracker </title>
       <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
       <link rel="stylesheet" type="text/css" href="css/style.css">
+      <link rel="stylesheet" type="text/css" href="css/buttons.css">
    </head>
 
    <body>
+      <div class="container">
 
-      <div>
+         <section title=".runSlide">
+            <div class="runSlide">
+               <input type="checkbox" value="pause" id="runSlide" name="check" onclick="toggleTimer();" checked />
+               <label for="runSlide"></label>
+            </div>
+         </section>
 
-         <div class="block" id="timer"></div>
-         <div class="block scrollbar" id="content">
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
-            <span>sdfas dfsadf asdf sadfas dfasdf asdfkjdkjkjkjkjkjkjkjkjk jakjdfskjks ajkdfjksajdkfjk akjwkjhfekd jnasdnflqjwekljfwnq lkejfqnwlkefn lqwkjeflknqw fekqwjnkef lqwnfelqlkwjef</span><br/><hr/>
+         <div class="block">
+            <div id="timer">
+               <div id="clock"></div>
+            </div>
          </div>
+
+         <div class="block scrollbar" id="content">
+            <div class="inner"></div>
+         </div>
+
          <div class="block" id="footer">
-           <input id="todoInput" type="text">
+            <div class="inner">
+               <input id="todoInput" type="text">
+            </div>
          </div>
 
       </div>
-
    </body>
 
    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
