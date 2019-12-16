@@ -1,24 +1,26 @@
-let startTime = 28800; // TODO: 8 hours (in seconds)
+let currentTime = 28800; // TODO: 8 hours (in seconds)
 let timerState = false;
 
 const toggleTimer = () => {
    const runCheckbox = document.getElementById("runSlide");
-
-   if (runCheckbox.value === 'start') {
-      runCheckbox.value = 'pause';
-      clearInterval(timerState);
-      timerState = false;
-   } else {
-      runCheckbox.value = 'start';
-      launchTimer(startTime);
-   }
+   runCheckbox.value = (runCheckbox.value === 'start') ? pauseTimer() : launchTimer();
 };
 
-const launchTimer = (time) => {
+const launchTimer = () => {
    timerState = setInterval(() => {
-      time--;
-      renderTimer(time);
+      currentTime--;
+      renderTimer(currentTime);
+      checkAlertTime(currentTime);
    }, 1000);
+
+   return 'start';
+};
+
+const pauseTimer = () => {
+   clearInterval(timerState);
+   timerState = false;
+
+   return 'pause';
 };
 
 const renderTimer = (currentTime) => {
@@ -28,14 +30,14 @@ const renderTimer = (currentTime) => {
    document.getElementById('timer_text').innerHTML = time;
 };
 
-const convertTime = (n) => {
+const convertTime = (t) => {
    const maxSec = 60;
    const maxMin = 60;
 
    const time = {
-      hour: Math.floor(n / (maxMin * maxSec)),
-      min: Math.floor(n % (maxMin * maxSec) / maxSec),
-      sec: n % maxSec
+      hour: Math.floor(t / (maxMin * maxSec)),
+      min: Math.floor(t % (maxMin * maxSec) / maxSec),
+      sec: t % maxSec
    };
 
    for (let propName of Object.keys(time)) {
@@ -47,4 +49,8 @@ const convertTime = (n) => {
    return time.hour + " : " + time.min + " : " + time.sec;
 };
 
-renderTimer(startTime); // run timer rendering when first time loads
+const checkAlertTime = (t) => {
+
+};
+
+renderTimer(currentTime); // run timer rendering when first time loads
