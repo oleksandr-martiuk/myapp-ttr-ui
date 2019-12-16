@@ -4,7 +4,7 @@ let win;
 
 function createWindow () {
    win = new BrowserWindow({
-      // fullscreen: true,
+      // fullscreen: true, // TODO: uncommented (dev.mode)
       width: 1000,
       height: 700,
       center: true,

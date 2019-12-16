@@ -1,9 +1,11 @@
 let input = document.getElementById("todoInput");
 
 input.addEventListener("keyup", function(event) {
+   console.log(event.code);
    if (event.code === 'Enter') {
       event.preventDefault();
       renderNewTask(event.target['value']);
+      // mainWin.minimize(); // TODO: uncommented (dev.mode)
    }
 });
 

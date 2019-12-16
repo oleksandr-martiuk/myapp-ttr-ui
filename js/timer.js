@@ -1,36 +1,35 @@
-let currentTime = 28800; // TODO: 8 hours (in seconds)
-let timerState = false;
+const mainWin = require('electron').remote.getCurrentWindow();
+const timer = {
+   time: 28800, // TODO: 8 hours
+   state: false
+};
 
-const toggleTimer = () => {
-   const runCheckbox = document.getElementById("runSlide");
-   runCheckbox.value = (runCheckbox.value === 'start') ? pauseTimer() : launchTimer();
+const toggleTimer = (element) => {
+   (element.checked) ? pauseTimer(element) : launchTimer(element);
 };
 
 const launchTimer = () => {
-   timerState = setInterval(() => {
-      currentTime--;
-      renderTimer(currentTime);
-      checkAlertTime(currentTime);
+   timer.state = setInterval(() => {
+      timer.time--;
+      renderTimer();
+      checkAlertTime();
    }, 1000);
-
-   return 'start';
+   // mainWin.minimize(); // TODO: uncommented (dev.mode)
 };
 
 const pauseTimer = () => {
-   clearInterval(timerState);
-   timerState = false;
-
-   return 'pause';
+   clearInterval(timer.state);
 };
 
-const renderTimer = (currentTime) => {
-   const time = convertTime(currentTime);
+const renderTimer = () => {
+   const time = convertTime(timer.time);
 
    document.getElementById('timer').innerHTML += "<span id='timer_text'></span>";
    document.getElementById('timer_text').innerHTML = time;
 };
 
-const convertTime = (t) => {
+const convertTime = () => {
+   const {time: t} = timer;
    const maxSec = 60;
    const maxMin = 60;
 
@@ -49,8 +48,11 @@ const convertTime = (t) => {
    return time.hour + " : " + time.min + " : " + time.sec;
 };
 
-const checkAlertTime = (t) => {
-
+const checkAlertTime = () => {
+   if (timer.time % 1800 === 0) {
+      // mainWin.setFullScreen(true); // TODO: uncommented (dev.mode)
+      mainWin.show();
+   }
 };
 
-renderTimer(currentTime); // run timer rendering when first time loads
+renderTimer(); // run timer rendering when first time loads
