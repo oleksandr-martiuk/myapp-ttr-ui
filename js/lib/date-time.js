@@ -18,14 +18,14 @@ const convertTime = () => {
    const {time: t} = state;
    const maxSec = 60;
    const maxMin = 60;
+   const time = {};
 
-   const time = {
-      hour: Math.floor(t / (maxMin * maxSec)),
-      min: Math.floor(t % (maxMin * maxSec) / maxSec),
-      sec: t % maxSec
-   };
+   time.hour = (t > 0) ? Math.floor(t / (maxMin * maxSec)) : Math.round(t / (maxMin * maxSec));
+   time.min = (t > 0) ? Math.floor(t % (maxMin * maxSec) / maxSec) : Math.round(t % (maxMin * maxSec) / maxSec);
+   time.sec = t % maxSec;
 
    for (let propName of Object.keys(time)) {
+      time[propName] = (time[propName] < 0) ? -time[propName] : time[propName];
       if (time[propName] < 10) {
          time[propName] = "0" + time[propName];
       }
@@ -33,12 +33,3 @@ const convertTime = () => {
 
    return time.hour + " : " + time.min + " : " + time.sec;
 };
-
-// const getTimestamp = () => {
-//    const timeNow = new Date();
-//    return Math.floor(timeNow.getTime() / 1000);
-// };
-// const toTimestamp = (strDate) => {
-//    const datum = Date.parse(strDate);
-//    return datum/1000;
-// };

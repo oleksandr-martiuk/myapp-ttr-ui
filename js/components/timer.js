@@ -1,26 +1,19 @@
 const toggleTimer = () => {
-   const element = document.getElementById('startBtn');
-   if (!!state.timerStatus) {
-      pauseTimer();
-      element.innerText = 'START';
-      replaceClass(element, "red", "green");
-   } else {
-      launchTimer();
-      element.innerText = 'STOP';
-      replaceClass(element, "green","red", );
-   }
+   (!!state.timerStatus) ? pauseTimer() : launchTimer();
 };
 
 const launchTimer = () => {
+   changeStartBtnState('stop');
    state.timerStatus = setInterval(() => {
       state.time--;
       renderTimer();
-      checkNoteTime();
+      checkTimeEvents();
    }, 1000);
    // mainWin.minimize(); // TODO: USER mode
 };
 
 const pauseTimer = () => {
+   changeStartBtnState('start');
    clearInterval(state.timerStatus);
    state.timerStatus = false;
 };
@@ -32,14 +25,19 @@ const renderTimer = () => {
    document.getElementById('timer_text').innerHTML = time;
 };
 
-const checkNoteTime = () => {
-   // if (state.time % +process.env.NOTE_TIME === 0) { // TODO: USER mode
-   //    mainWin.show();
-   //    addInput.focus();
-   // }
+const checkTimeEvents = () => {
+   if (state.time % +process.env.NOTE_TIME === 0) { // TODO: USER mode
+      pauseTimer();
+      mainWin.show();
+      addInput.focus();
+   }
 
    if (state.time % process.env.UPDATE_REGIME_PERIOD === 0) {
       updateLastRegimeTime();
+   }
+
+   if (state.time === 0) {
+      addSuccesfullTimerBoxStyle();
    }
 };
 
