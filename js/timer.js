@@ -1,18 +1,28 @@
-const toggleTimer = (element) => {
-   (element.checked) ? pauseTimer(element) : launchTimer(element);
+const toggleTimer = () => {
+   const element = document.getElementById('startBtn');
+   if (!!state.timerStatus) {
+      pauseTimer();
+      element.innerText = 'START';
+      replaceClass(element, "red", "green");
+   } else {
+      launchTimer();
+      element.innerText = 'STOP';
+      replaceClass(element, "green","red", );
+   }
 };
 
 const launchTimer = () => {
    state.timerStatus = setInterval(() => {
       state.time--;
       renderTimer();
-      checkNoteTime();
+      // checkNoteTime(); // TODO: USER mode
    }, 1000);
-   mainWin.minimize(); // TODO: to uncomment (dev.mode)
+   // mainWin.minimize(); // TODO: USER mode
 };
 
 const pauseTimer = () => {
    clearInterval(state.timerStatus);
+   state.timerStatus = false;
 };
 
 const renderTimer = () => {
@@ -24,7 +34,8 @@ const renderTimer = () => {
 
 const checkNoteTime = () => {
    if (state.time % +process.env.NOTE_TIME === 0) {
-      mainWin.show(); // TO
+      mainWin.show(); // TODO: USER mode
+      addInput.focus();
    }
 };
 

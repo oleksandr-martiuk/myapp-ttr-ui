@@ -29,3 +29,15 @@ const saveTask = (task) => {
       });
    })
 };
+
+const deleteTask = (id) => {
+   return new Promise(resolve => {
+      return Task.deleteOne({ _id: id }, (err, result) => {
+         if (err) {
+            console.log(err);
+            resolve(err);
+         }
+         resolve(result.deletedCount);
+      });
+   })
+};

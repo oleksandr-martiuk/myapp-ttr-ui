@@ -33,3 +33,9 @@ const convertTime = () => {
 
    return time.hour + " : " + time.min + " : " + time.sec;
 };
+
+// const toTimestamp = (strDate) => {
+//    const datum = Date.parse(strDate);
+//    return datum/1000;
+// }
+// console.log(toTimestamp('12/15/2019 12:00:00'));

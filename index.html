@@ -11,12 +11,9 @@
    <body>
       <div class="container">
 
-         <section title=".runSlide">
-            <div class="runSlide">
-               <input type="checkbox" value="pause" id="runSlide" name="check" onclick="toggleTimer(this);" checked/>
-               <label id="runBtnLabel" for="runSlide"></label>
-            </div>
-         </section>
+         <div class="buttons">
+            <button class="custom-btn btn green" id="startBtn" onclick="toggleTimer()">START</button>
+         </div>
 
          <div class="block">
             <div id="timer">
@@ -39,9 +36,9 @@
 
    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
    <script src="js/app.js"></script>
-   <script src="js/state.js"></script>
 
    <script src="js/lib/date-time.js"></script>
+   <script src="js/lib/styles.js"></script>
 
    <script src="db/connection.js"></script>
    <script src="db/methods.js"></script>
