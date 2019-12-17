@@ -1,10 +1,11 @@
 const { app, BrowserWindow } = require('electron');
+require('dotenv').config();
 
 let win;
 
 function createWindow () {
    win = new BrowserWindow({
-      // fullscreen: true, // TODO: uncommented (dev.mode)
+      fullscreen: true, // TODO: to uncomment (dev.mode)
       width: 1000,
       height: 700,
       center: true,
@@ -16,6 +17,7 @@ function createWindow () {
    });
 
    win.loadFile('index.html');
+   // win.openDevTools(); // TODO: remove it (just dev.mode)
 
    win.on('closed', () => {
       win = null;

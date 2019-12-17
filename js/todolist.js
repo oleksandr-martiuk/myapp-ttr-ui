@@ -1,16 +1,35 @@
 let input = document.getElementById("todoInput");
-
-input.addEventListener("keyup", function(event) {
-   console.log(event.code);
+input.addEventListener("keyup", async (event) => {
    if (event.code === 'Enter') {
       event.preventDefault();
-      renderNewTask(event.target['value']);
-      // mainWin.minimize(); // TODO: uncommented (dev.mode)
+
+      await saveTask(event.target['value']);
+      await renderAllTasks();
+      cleanAddInput();
+      mainWin.minimize(); // TODO: to uncomment (dev.mode)
    }
 });
 
-const renderNewTask = (task) => {
-   document.getElementById('content').innerHTML += "<span id='timer_text'>" + task + "</span><br/><hr/>";
+const renderTasks = async (tasks) => {
+   document.getElementById('content').innerHTML = "";
+   if (Array.isArray(tasks)){
+      for (let [i, value] of tasks.entries()) {
+         const addHTML = "<span id='timer_text'>" + ++i + ". " + value.task + "</span><br/><hr/>"
+         document.getElementById('content').innerHTML += addHTML;
+      }
+   }
+};
+
+const cleanAddInput = () => {
    input.value = "";
-   document.activeElement.blur(); // remove focus from input (active element)
+   document.activeElement.blur(); // removes focus from input (active element)
+};
+
+const renderAllTasks = async () => {
+   const tasks = await findAllTasks();
+   await renderTasks(tasks);
+};
+
+const toggleStart = () => {
+
 };

@@ -12,11 +12,11 @@
   },
   "author": "Oleksandr Martiuk <oleksandr.martiuk@gmail.com>",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/oleksandr-martiuk/itmentor-3t/issues"
-  },
-  "homepage": "https://github.com/oleksandr-martiuk/itmentor-3t#readme",
   "devDependencies": {
     "electron": "^7.1.5"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.8.1"
   }
 }

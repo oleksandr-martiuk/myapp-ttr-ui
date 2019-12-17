@@ -1,6 +1,11 @@
 # IDEs and editors
 /.idea
 
+# node modules
 /node_modules
 
+# lock
 package-lock.json
+
+# environment variables
+.env
