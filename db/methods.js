@@ -1,6 +1,4 @@
-const findAllTasks = () => {
-   const date = getDateToday();
-
+const findAllTasksByDate = (date) => {
    return new Promise(resolve => {
       return Task.find({date}, (err, tasks) => {
          if (err) {
@@ -12,11 +10,7 @@ const findAllTasks = () => {
    })
 };
 
-const saveTask = (task) => {
-   const date = getDateToday();
-   const user = 'some.random.user';
-
-   const taskRec = { user, task, date };
+const saveTask = (taskRec) => {
    const taskModel = new Task(taskRec);
 
    return new Promise(resolve => {
@@ -38,6 +32,46 @@ const deleteTask = (id) => {
             resolve(err);
          }
          resolve(result.deletedCount);
+      });
+   })
+};
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+const saveRegime = (regimeRec) => {
+   const regimeModel = new Regime(regimeRec);
+
+   return new Promise(resolve => {
+      return regimeModel.save((err, regime) => {
+         if (err) {
+            console.log(err);
+            resolve(err);
+         }
+         resolve(regime['_doc']);
+      });
+   })
+};
+
+const findRegimesByParams = (parameters) => {
+   return new Promise(resolve => {
+      return Regime.find(parameters, (err, regimes) => {
+         if (err) {
+            return console.error(err);
+         }
+         const results = regimes.map(item => item['_doc']);
+         resolve(results);
+      });
+   })
+};
+
+const updateRegime = (id, update) => {
+   return new Promise(resolve => {
+      return Regime.findByIdAndUpdate(id, update, (err, regime) => {
+         if (err) {
+            console.log(err);
+            resolve(err);
+         }
+         resolve(regime['_doc']);
       });
    })
 };

@@ -3,7 +3,13 @@ addInput.addEventListener("keyup", async (event) => {
    if (event.code === 'Enter') {
       event.preventDefault();
 
-      await saveTask(event.target['value']);
+      const date = getDateToday();
+      const user = 'oleksandr.martiuk';
+      const task = event.target['value'];
+
+      const taskRec = { user, task, date };
+
+      await saveTask(taskRec);
       await renderAllTasks();
       cleanAddInput();
       // mainWin.minimize(); // TODO: DEV mode
@@ -38,6 +44,8 @@ const cleanAddInput = () => {
 };
 
 const renderAllTasks = async () => {
-   const tasks = await findAllTasks();
+   const date = getDateToday();
+   const tasks = await findAllTasksByDate(date);
+
    await renderTasks(tasks);
 };

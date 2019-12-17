@@ -1,4 +1,6 @@
 // Start point
 (async () => {
-   await renderAllTasks();
+   const regime = await getLastRegimeByDate();
+   state.time = (regime.time) ? regime.time : process.env.MAX_TIME;
+   await Promise.all([renderAllTasks(), renderTimer()]);
 })();
