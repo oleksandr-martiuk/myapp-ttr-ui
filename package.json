@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0",
+    "electron-packager": "^14.1.1",
     "mongoose": "^5.8.1"
   }
 }

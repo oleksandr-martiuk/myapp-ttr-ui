@@ -4,8 +4,9 @@
 # node modules
 /node_modules
 
-# lock
+# package lock
 package-lock.json
+yarn.lock
 
 # environment variables
 .env
