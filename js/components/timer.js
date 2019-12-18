@@ -3,13 +3,23 @@ const toggleTimer = () => {
 };
 
 const launchTimer = () => {
+   state.start.actualTime = getTimeNow();
+   state.start.pointTime = state.time;
+
    changeStartBtnState('stop');
    state.timerStatus = setInterval(() => {
-      state.time--;
+      setStateTime();
       renderTimer();
       checkTimeEvents();
    }, 1000);
-   mainWin.minimize(); // TODO: **USER** mode
+   // mainWin.minimize(); // TODO: **USER** mode
+};
+
+const setStateTime = () => {
+   const timeNow = getTimeNow();
+   const diff = timeNow - state.start.actualTime;
+
+   state.time = state.start.pointTime - diff;
 };
 
 const pauseTimer = () => {
@@ -26,19 +36,23 @@ const renderTimer = () => {
 };
 
 const checkTimeEvents = () => {
-   if (state.time % +process.env.NOTE_TIME === 0) { // TODO: **USER** mode
-      pauseTimer();
-      mainWin.show();
-      addInput.focus();
-   }
+   getLastRegimeByDate().then(lastRegime => {
+      if (lastRegime.lastNoteTime - state.time >= process.env.NOTE_TIME) { // TODO: **USER** mode
+         pauseTimer();
+         mainWin.show();
+         addInput.focus();
+      }
 
-   if (state.time % process.env.UPDATE_REGIME_PERIOD === 0) {
-      updateLastRegimeTime();
-   }
+      if (state.time % process.env.UPDATE_REGIME_PERIOD === 0) {
+         updateLastRegimeTime({time: state.time});
+      }
 
-   if (state.time === 0) {
-      addSuccesfullTimerBoxStyle();
-   }
+      if (state.time <= 0) {
+         addSuccesfullTimerBoxStyle();
+      }
+
+      return Promise.resolve();
+   })
 };
 
 const getLastRegimeByDate = async () => {
@@ -54,16 +68,22 @@ const getLastRegimeByDate = async () => {
    return (regimes.length) ? getLastSortdRegime(regimes) : regime;
 };
 
-const updateLastRegimeTime = async () => {
+const updateLastRegimeTime = async (newParams = {}) => {
    const date = getDateToday();
    const user = 'oleksandr.martiuk';
-   const parameters = {date, user};
+   const regimeParameters = {date, user};
 
-   const lastRegime = await getLastRegimeByDate(parameters);
+   const lastRegime = await getLastRegimeByDate(regimeParameters);
    if (Object.keys(lastRegime).length) {
-      await updateRegime(lastRegime._id, {time: state.time});
+      await updateRegime(lastRegime._id, {...newParams});
    } else {
-      await saveRegime({...parameters, time: state.time});
+      const preparedRegime = {
+         ...regimeParameters,
+         ...newParams,
+         time: state.time,
+         lastNoteTime: process.env.MAX_TIME
+      };
+      await saveRegime(preparedRegime);
    }
 };
 

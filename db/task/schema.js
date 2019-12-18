@@ -1,15 +1,15 @@
 const taskSchema = new mongoose.Schema({
    user: {
       type: String,
-      require: true
+      required: true
    },
    task: {
       type: String,
-      require: true
+      required: true
    },
    date: {
       type: String,
-      require: true
+      required: true
    }
 }, {
    collection: 'tasks'

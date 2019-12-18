@@ -1,15 +1,19 @@
 const regimeSchema = new mongoose.Schema({
    user: {
       type: String,
-      require: true
+      required: true
    },
    date: {
       type: String,
-      require: true
+      required: true
    },
    time: {
       type: Number,
-      require: true
+      required: true
+   },
+   lastNoteTime: {
+      type: Number,
+      required: true
    }
 }, {
    collection: 'regimes'

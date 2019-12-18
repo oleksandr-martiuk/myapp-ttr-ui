@@ -14,10 +14,11 @@ addInput.addEventListener("keyup", async (event) => {
       const taskRec = { user, task, date };
 
       await saveTask(taskRec);
+      await updateLastRegimeTime({lastNoteTime: state.time});
       await renderAllTasks();
 
       cleanAddInput();
-      mainWin.minimize(); // TODO: **USER** mode
+      // mainWin.minimize(); // TODO: **USER** mode
    }
 });
 

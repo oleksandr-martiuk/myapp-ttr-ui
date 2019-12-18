@@ -33,3 +33,9 @@ const convertTime = () => {
 
    return time.hour + " : " + time.min + " : " + time.sec;
 };
+
+
+const getTimeNow = () => {
+   let timeNow = new Date().getTime();
+   return Math.floor(timeNow / 1000);
+};

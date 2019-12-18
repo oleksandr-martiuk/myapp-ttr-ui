@@ -6,4 +6,5 @@
    if (state.time <= 0) {
       addSuccesfullTimerBoxStyle();
    }
+   await updateLastRegimeTime();
 })();
