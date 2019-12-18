@@ -10,3 +10,6 @@ yarn.lock
 
 # environment variables
 .env
+
+# packaged app
+/TTT-win32-x64

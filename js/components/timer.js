@@ -9,7 +9,7 @@ const launchTimer = () => {
       renderTimer();
       checkTimeEvents();
    }, 1000);
-   // mainWin.minimize(); // TODO: USER mode
+   mainWin.minimize(); // TODO: **USER** mode
 };
 
 const pauseTimer = () => {
@@ -26,7 +26,7 @@ const renderTimer = () => {
 };
 
 const checkTimeEvents = () => {
-   if (state.time % +process.env.NOTE_TIME === 0) { // TODO: USER mode
+   if (state.time % +process.env.NOTE_TIME === 0) { // TODO: **USER** mode
       pauseTimer();
       mainWin.show();
       addInput.focus();

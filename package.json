@@ -13,7 +13,7 @@
   "author": "Oleksandr Martiuk <oleksandr.martiuk@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^7.1.5"
+    "electron": "^7.1.6"
   },
   "dependencies": {
     "dotenv": "^8.2.0",

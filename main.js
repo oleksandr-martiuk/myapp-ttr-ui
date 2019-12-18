@@ -1,11 +1,13 @@
 const { app, BrowserWindow } = require('electron');
-require('dotenv').config();
+require('dotenv').config({
+   path: `${__dirname}/.env`
+});
 
 let win;
 
 function createWindow () {
    win = new BrowserWindow({
-      // fullscreen: true, // TODO: USER mode
+      fullscreen: true, // TODO: **USER** mode
       width: 1000,
       height: 700,
       center: true,
@@ -17,7 +19,7 @@ function createWindow () {
    });
 
    win.loadFile('index.html');
-   win.openDevTools(); // TODO: DEV mode
+   // win.openDevTools();
 
    win.on('closed', () => {
       win = null;

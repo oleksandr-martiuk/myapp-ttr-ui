@@ -17,7 +17,7 @@ addInput.addEventListener("keyup", async (event) => {
       await renderAllTasks();
 
       cleanAddInput();
-      // mainWin.minimize(); // TODO: DEV mode
+      mainWin.minimize(); // TODO: **USER** mode
    }
 });
 
