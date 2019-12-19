@@ -22,7 +22,7 @@ $red: crimson;
    display: inline-block;
 }
 
-/**** BTN ****/
+/**** RUN-BTN ****/
 .btn {
    background: $darkCyan;
    border: 2px solid $darkgrey;
@@ -78,4 +78,32 @@ $red: crimson;
 }
 .removeBtn:active {
    text-shadow: lightcoral 0 0 15px;;
+}
+
+/**** HIDE-BTN ****/
+#hideBtn {
+   background-image: url('../public/images/hide_btn.png');
+   position: fixed;
+   top: 10px;
+   right: 10px;
+   z-index: 1;
+
+   border: 1px solid $darkCyan;
+   border-radius: 3px;
+   background-repeat: no-repeat;
+   color: $white;
+
+   width: 40px;
+   height: 38px;
+
+   cursor: hand;
+   align-content: center;
+}
+#hideBtn:hover {
+   background-position: 0 -38.6px;
+   box-shadow: 0 0 10px $cyan;
+}
+#hideBtn:active {
+   background-position: 0 -77.5px;
+   box-shadow: 0 0 10px $darkCyan;
 }
