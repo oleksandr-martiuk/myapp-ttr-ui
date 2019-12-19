@@ -12,7 +12,7 @@ const launchTimer = () => {
       renderTimer();
       checkTimeEvents();
    }, 1000);
-   // mainWin.minimize(); // TODO: **USER** mode
+   mainWin.minimize(); // TODO: **USER** mode
 };
 
 const setStateTime = () => {
