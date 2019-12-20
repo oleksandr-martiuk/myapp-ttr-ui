@@ -1,13 +1,19 @@
-const { app, BrowserWindow } = require('electron');
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+
 require('dotenv').config({
    path: `${__dirname}/.env`
 });
 
-let win;
+const path = require('path');
+const url = require('url');
 
-function createWindow () {
-   win = new BrowserWindow({
-      fullscreen: true, // TODO: **USER** mode
+let mainWindow;
+
+const createWindow = () => {
+   mainWindow = new BrowserWindow({
+      // fullscreen: true, // TODO: USER-mode
       width: 1000,
       height: 700,
       center: true,
@@ -18,24 +24,30 @@ function createWindow () {
       icon: 'public/images/logo.ico'
    });
 
-   win.loadFile('index.html');
-   // win.openDevTools(); // TODO: >>> DEVELOP <<< mode
+   const startUrl = process.env.ELECTRON_START_URL || url.format({
+      pathname: path.join(__dirname, '/build/index.html'),
+      protocol: 'file:',
+      slashes: true
+   });
+   mainWindow.loadURL(startUrl);
 
-   win.on('closed', () => {
-      win = null;
+   mainWindow.webContents.openDevTools(); // TODO: DEV-mode
+
+   mainWindow.on('closed', function () {
+      mainWindow = null
    })
-}
+};
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', () => {
+app.on('window-all-closed', function () {
    if (process.platform !== 'darwin') {
-      app.quit();
+      app.quit()
    }
 });
 
-app.on('activate', () => {
-   if (win === null) {
-      createWindow();
+app.on('activate', function () {
+   if (mainWindow === null) {
+      createWindow()
    }
 });

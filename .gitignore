@@ -13,3 +13,6 @@ yarn.lock
 
 # packaged app
 /TTT-win32-x64
+
+# build
+/build
