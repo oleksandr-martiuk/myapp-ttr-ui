@@ -5,6 +5,9 @@ export const appTheme = createMuiTheme({
       primary: {
          main: '#60daaa'
       },
+      secondary: {
+         main: '#B00020'
+      },
       background: {
          default: '#000000'
       },

@@ -23,7 +23,13 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       cursor: {
          cursor: 'pointer',
-         color: theme.palette.primary.main
+         color: theme.palette.primary.main,
+         '&:hover': {
+            transform: 'scale(1.4)'
+         },
+         '&:active': {
+            color: theme.palette.secondary.main,
+         },
       },
    })
 );
