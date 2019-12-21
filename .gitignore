@@ -16,3 +16,6 @@ yarn.lock
 
 # build
 /build
+
+# file type
+*.css.map

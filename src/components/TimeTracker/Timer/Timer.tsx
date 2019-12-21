@@ -1,64 +1,75 @@
 import React from 'react';
-const ms = require('pretty-ms');
+import {Box, Grid} from '@material-ui/core';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { ExpandMore, ExpandLess } from "@material-ui/icons";
+import clsx from "clsx";
 
-interface ITimer {
-   time: number;
-   isOn: boolean;
-   start: number;
+const useStyles = makeStyles((theme: Theme) =>
+   createStyles({
+      digitalBlock: {
+         textAlign: 'center',
+      },
+      digits: {
+         fontSize: '100px',
+         height: '70px',
+         display:'flex',
+         flexDirection: 'column',
+         justifyContent: 'center',
+      },
+      arrows: {
+         height: '20px',
+         padding: '0 0 5px 0',
+         zIndex: 1,
+      },
+      cursor: {
+         cursor: 'pointer',
+         color: theme.palette.primary.main
+      },
+   })
+);
+
+export default function Timer() {
+   const { digitalBlock, arrows, digits, cursor } = useStyles();
+
+   const doIt = () => console.log('Clicked: DO IT');
+   const doThat = () => console.log('Clicked: DO THAT');
+
+   return (
+      <div>
+         <Grid container>
+
+            <Grid container>
+               <Grid className={clsx(digitalBlock)} xs={2}></Grid>
+               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandLess className={cursor} onClick={doIt}/></Grid>
+               <Grid className={clsx(digitalBlock)} xs={1}></Grid>
+               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandLess className={cursor} onClick={doIt}/></Grid>
+               <Grid className={clsx(digitalBlock)} xs={1}></Grid>
+               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandLess className={cursor} onClick={doIt}/></Grid>
+               <Grid className={clsx(digitalBlock)} xs={2}></Grid>
+            </Grid>
+
+            <Grid container>
+               <Grid className={clsx(digitalBlock, digits)} xs={2}></Grid>
+               <Grid className={clsx(digitalBlock, digits)} xs={2}>00</Grid>
+               <Grid className={clsx(digitalBlock, digits)} xs={1}>:</Grid>
+               <Grid className={clsx(digitalBlock, digits)} xs={2}>00</Grid>
+               <Grid className={clsx(digitalBlock, digits)} xs={1}>:</Grid>
+               <Grid className={clsx(digitalBlock, digits)} xs={2}>00</Grid>
+               <Grid className={clsx(digitalBlock, digits)} xs={2}></Grid>
+            </Grid>
+
+            <Grid container>
+               <Grid className={clsx(digitalBlock)} xs={2}></Grid>
+               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandMore className={cursor} onClick={doThat}/></Grid>
+               <Grid className={clsx(digitalBlock)} xs={1}></Grid>
+               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandMore className={cursor} onClick={doThat}/></Grid>
+               <Grid className={clsx(digitalBlock)} xs={1}></Grid>
+               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandMore className={cursor} onClick={doThat}/></Grid>
+               <Grid className={clsx(digitalBlock)} xs={2}></Grid>
+            </Grid>
+
+            <Grid xs={2}></Grid>
+         </Grid>
+      </div>
+   )
 }
-class Timer extends React.Component {
-   public state: ITimer;
-   private timer!: NodeJS.Timeout;
-
-   constructor(props: any){
-      super(props);
-      this.state = {
-         time: 0,
-         isOn: false,
-         start: 0
-      };
-   }
-   startTimer = () => {
-      this.setState({
-         isOn: true,
-         time: this.state.time,
-         start: Date.now() - this.state.time
-      });
-      this.timer = setInterval(() => this.setState({
-         time: Date.now() - this.state.start
-      }), 1);
-   };
-   stopTimer = () => {
-      this.setState({isOn: false});
-      clearInterval(this.timer)
-   };
-   resetTimer = () => {
-      this.setState({time: 0, isOn: false})
-   };
-
-   render = () => {
-      let start = (this.state.time === 0) ?
-         <button onClick={this.startTimer}>start</button> :
-         null;
-      let stop = (this.state.time === 0 || !this.state.isOn) ?
-         null :
-         <button onClick={this.stopTimer}>stop</button>;
-      let resume = (this.state.time === 0 || this.state.isOn) ?
-         null :
-         <button onClick={this.startTimer}>resume</button>;
-      let reset = (this.state.time === 0 || this.state.isOn) ?
-         null :
-         <button onClick={this.resetTimer}>reset</button>;
-      return(
-         <div>
-            <h3>timer: {ms(this.state.time)}</h3>
-            {start}
-            {resume}
-            {stop}
-            {reset}
-         </div>
-      )
-   }
-}
-
-export default Timer;

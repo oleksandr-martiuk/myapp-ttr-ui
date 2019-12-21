@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme: Theme) =>
          'color': theme.palette.text.primary
       },
       timerBlock: {
-         margin: theme.spacing(0.2),
-         padding: theme.spacing(1),
+         margin: theme.spacing(0),
+         padding: theme.spacing(0),
          'background-color': theme.palette.background.default,
          'color': theme.palette.text.primary,
          'border': `1px solid ${theme.palette.primary.main}`,
