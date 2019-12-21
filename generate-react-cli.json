@@ -1,16 +1,11 @@
 {
   "component": {
-    "path": "src",
-    "css": {
-      "preprocessor": "scss",
-      "module": true,
-      "withStyle": true
-    },
+    "path": "src/components",
     "test": {
       "library": "None",
       "withTest": true
     },
-    "withStory": true,
+    "withStory": false,
     "withLazy": true
   },
   "usesTypeScript": true
