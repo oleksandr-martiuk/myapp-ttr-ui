@@ -12,7 +12,9 @@ export const appTheme = createMuiTheme({
          default: '#000000'
       },
       text: {
-         primary: '#FFFFFF'
+         primary: '#FFFFFF',
+         secondary: '#8D8D8D',
+         disabled: '#3A3A3A'
       }
    },
 });
