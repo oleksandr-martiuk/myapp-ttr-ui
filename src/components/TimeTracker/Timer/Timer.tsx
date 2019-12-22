@@ -16,26 +16,26 @@ const useStyles = makeStyles((theme: Theme) =>
          flexDirection: 'column',
          justifyContent: 'center',
       },
-      arrows: {
+      arrowBlock: {
          height: '20px',
          padding: '0 0 5px 0',
          zIndex: 1,
       },
-      cursor: {
+      arrow: {
          cursor: 'pointer',
-         color: theme.palette.primary.main,
+         color: theme.palette.text.primary,
          '&:hover': {
-            transform: 'scale(1.4)'
+            color: theme.palette.primary.main,
          },
          '&:active': {
-            color: theme.palette.secondary.main,
+            transform: 'scale(1.3)'
          },
       },
    })
 );
 
 export default function Timer() {
-   const { digitalBlock, arrows, digits, cursor } = useStyles();
+   const { digitalBlock, arrowBlock, digits, arrow } = useStyles();
 
    const doIt = () => console.log('Clicked: DO IT');
    const doThat = () => console.log('Clicked: DO THAT');
@@ -46,11 +46,11 @@ export default function Timer() {
 
             <Grid container>
                <Grid className={clsx(digitalBlock)} xs={2}></Grid>
-               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandLess className={cursor} onClick={doIt}/></Grid>
+               <Grid className={clsx(digitalBlock, arrowBlock)} xs={2}><ExpandLess className={arrow} onClick={doIt}/></Grid>
                <Grid className={clsx(digitalBlock)} xs={1}></Grid>
-               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandLess className={cursor} onClick={doIt}/></Grid>
+               <Grid className={clsx(digitalBlock, arrowBlock)} xs={2}><ExpandLess className={arrow} onClick={doIt}/></Grid>
                <Grid className={clsx(digitalBlock)} xs={1}></Grid>
-               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandLess className={cursor} onClick={doIt}/></Grid>
+               <Grid className={clsx(digitalBlock, arrowBlock)} xs={2}><ExpandLess className={arrow} onClick={doIt}/></Grid>
                <Grid className={clsx(digitalBlock)} xs={2}></Grid>
             </Grid>
 
@@ -66,15 +66,14 @@ export default function Timer() {
 
             <Grid container>
                <Grid className={clsx(digitalBlock)} xs={2}></Grid>
-               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandMore className={cursor} onClick={doThat}/></Grid>
+               <Grid className={clsx(digitalBlock, arrowBlock)} xs={2}><ExpandMore className={arrow} onClick={doThat}/></Grid>
                <Grid className={clsx(digitalBlock)} xs={1}></Grid>
-               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandMore className={cursor} onClick={doThat}/></Grid>
+               <Grid className={clsx(digitalBlock, arrowBlock)} xs={2}><ExpandMore className={arrow} onClick={doThat}/></Grid>
                <Grid className={clsx(digitalBlock)} xs={1}></Grid>
-               <Grid className={clsx(digitalBlock, arrows)} xs={2}><ExpandMore className={cursor} onClick={doThat}/></Grid>
+               <Grid className={clsx(digitalBlock, arrowBlock)} xs={2}><ExpandMore className={arrow} onClick={doThat}/></Grid>
                <Grid className={clsx(digitalBlock)} xs={2}></Grid>
             </Grid>
 
-            <Grid xs={2}></Grid>
          </Grid>
       </div>
    )

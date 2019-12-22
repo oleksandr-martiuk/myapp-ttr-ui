@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
          'border': `1px solid ${theme.palette.primary.main}`,
          'border-radius': "3px"
       },
-      reports: {
-         height: "355px"
-      },
       textCenter: {
          textAlign: 'center'
       },
@@ -34,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function TimeTracker() {
-   const {root, timerBlock, textCenter, textRight, reports} = useStyles();
+   const {root, timerBlock, textCenter, textRight} = useStyles();
 
    return (
       <div>
