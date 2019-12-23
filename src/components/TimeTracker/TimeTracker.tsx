@@ -8,17 +8,18 @@ import Timer from "./Timer/Timer";
 const useStyles = makeStyles((theme: Theme) =>
    createStyles({
       root: {
-         'flex-grow': 1,
-         'background-color':  theme.palette.background.default,
-         'color': theme.palette.text.primary
+         flexGrow: 1,
+         backgroundColor:  theme.palette.background.default,
+         color: theme.palette.text.primary
       },
-      timerBlock: {
-         margin: theme.spacing(0),
-         padding: theme.spacing(0),
-         'background-color': theme.palette.background.default,
-         'color': theme.palette.text.primary,
-         'border': `1px solid ${theme.palette.primary.main}`,
-         'border-radius': "3px"
+      block: {
+         padding: theme.spacing(0.5),
+         margin: theme.spacing(0.5, 0),
+         backgroundColor: theme.palette.background.default,
+         color: theme.palette.text.primary,
+      },
+      timer: {
+         margin: theme.spacing(1)
       },
       textCenter: {
          textAlign: 'center'
@@ -26,12 +27,11 @@ const useStyles = makeStyles((theme: Theme) =>
       textRight: {
          textAlign: 'right'
       },
-
    }),
 );
 
 export default function TimeTracker() {
-   const {root, timerBlock, textCenter, textRight} = useStyles();
+   const {root, block, timer, textCenter, textRight} = useStyles();
 
    return (
       <div>
@@ -39,15 +39,12 @@ export default function TimeTracker() {
             <Grid className={clsx(root)} xs={2}>MENU</Grid>
 
             <Grid container className={clsx(root)} xs={8}>
-               <Grid className={clsx(textCenter)} xs={12}>Button RUN/STOP</Grid>
-
-               <Grid className={clsx(textCenter, timerBlock)} xs={12}><Timer/></Grid>
-
-               <Grid className={clsx(timerBlock)} xs={12}>
-                  <TimeReports />
+               <Grid className={clsx(timer, textCenter)} xs={12}>
+                  <Timer/>
                </Grid>
-
-               <Grid className={clsx(textCenter, timerBlock)} xs={12}>Task input...</Grid>
+               <Grid className={block} xs={12}>
+                  <TimeReports/>
+               </Grid>
             </Grid>
 
             <Grid className={clsx(root, textRight)} xs={2}>HIDE button</Grid>

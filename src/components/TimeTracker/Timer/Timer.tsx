@@ -15,7 +15,8 @@ const styles = (theme: Theme) => ({
       alignContent: 'center',
    },
    btn: {
-      border: '1px solid black'
+      border: `1px solid ${theme.palette.text.primary}`,
+      padding: theme.spacing(0.2, 1),
    },
    digits: {
       fontSize: '80px',
@@ -28,6 +29,9 @@ const styles = (theme: Theme) => ({
       height: '20px',
       padding: '0 0 5px 0',
       zIndex: 1,
+   },
+   arrowDisabled: {
+      color: theme.palette.text.disabled
    },
    arrow: {
       cursor: 'pointer',
@@ -51,11 +55,7 @@ class Timer extends Component<any, any> {
          time: 28800000,
          isOn: false,
          btnName: 'Start',
-         timer: {
-            h: 0,
-            m: 0,
-            s: 0
-         }
+         timer: { h: 0, m: 0, s: 0 }
       };
       this.timer = 0;
    }
@@ -69,23 +69,28 @@ class Timer extends Component<any, any> {
       this.timer = setInterval(() => {
          const time = this.state.start - Date.now();
          this.updateTimer(time);
-         console.log(time);
       }, 1000);
    };
 
    updateTimer = (time: number) => {
-      console.log('Update TIME => time: ', time);
+      const updatedTime: {[index: string]:any} = {
+         h: Math.trunc(moment.duration(time).asHours()),
+         m: moment.duration(time).minutes(),
+         s: moment.duration(time).seconds()
+      };
 
-      const hours = Math.trunc(moment.duration(time).asHours());
-      const minutes = moment.duration(time).minutes();
-      const seconds = moment.duration(time).seconds();
+      for (let name in updatedTime) {
+         if (updatedTime[name] < 0) {
+            updatedTime[name] = -updatedTime[name];
+         }
+      }
 
       this.setState({
          time: time,
          timer: {
-            h: (hours < 10) ? "0" + hours : hours,
-            m: (minutes < 10) ? "0" + minutes : minutes,
-            s: (seconds < 10) ? "0" + seconds : seconds
+            h: (updatedTime.h < 10) ? "0" + updatedTime.h : updatedTime.h,
+            m: (updatedTime.m < 10) ? "0" + updatedTime.m : updatedTime.m,
+            s: (updatedTime.s < 10) ? "0" + updatedTime.s : updatedTime.s
          }
       });
    };
@@ -96,20 +101,20 @@ class Timer extends Component<any, any> {
          btnName: 'Start',
       });
       clearInterval(this.timer);
-      console.log('--------------------------------------------------');
    };
 
    toggleTimer = () => (this.state.isOn) ? this.stopTimer() : this.runTimer();
 
    changeTime = (timeSegment = "", vary = 0) => {
-      console.log('timeSegment=', timeSegment, ' | vary=', vary);
-      let changeTime = +this.state.time;
+      if (this.state.start) {
+         return;
+      }
 
+      let changeTime = +this.state.time;
       const maxMs = 1000;
       const maxSec = 60;
       const maxMin = 60;
 
-      console.log('1. changeTime = ', changeTime);
       if (timeSegment === 'hours') {
          changeTime += vary * (maxMin * maxSec * maxMs);
       } else if (timeSegment === 'minutes') {
@@ -117,17 +122,20 @@ class Timer extends Component<any, any> {
       } else if (timeSegment === 'seconds') {
          changeTime += vary * maxMs;
       }
-      console.log('2. changeTime = ', changeTime);
-
-      console.log('---------------------------------------------------------');
 
       if (changeTime >= 0) {
          this.updateTimer(changeTime);
       }
    };
 
+   componentDidMount(): void {
+      this.updateTimer(this.state.time);
+   }
+
    render() {
       const { classes } = this.props;
+      const btnTextColor = (this.state.btnName === 'Start') ? "#60daaa" : "#B00020";
+      const arrowStyle = (this.state.start) ? classes.arrowDisabled : classes.arrow;
 
       return (
          <div>
@@ -136,15 +144,15 @@ class Timer extends Component<any, any> {
                <Grid container>
                   <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
                   <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={classes.arrow} onClick={() => this.changeTime('hours', 1)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime('hours', 1)}/>
                   </Grid>
                   <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
                   <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={classes.arrow} onClick={() => this.changeTime('minutes', 1)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime('minutes', 1)}/>
                   </Grid>
                   <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
                   <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={classes.arrow} onClick={() => this.changeTime('seconds', 1)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime('seconds', 1)}/>
                   </Grid>
                   <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
                </Grid>
@@ -162,22 +170,22 @@ class Timer extends Component<any, any> {
                <Grid container>
                   <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
                   <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandMore className={classes.arrow} onClick={() => this.changeTime('hours', -1)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime('hours', -1)}/>
                   </Grid>
                   <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
                   <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandMore className={classes.arrow} onClick={() => this.changeTime('minutes', -1)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime('minutes', -1)}/>
                   </Grid>
                   <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
                   <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandMore className={classes.arrow} onClick={() => this.changeTime('seconds', -1)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime('seconds', -1)}/>
                   </Grid>
                   <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
                </Grid>
 
                <Grid container>
                   <Grid  className={classes.buttonBlock} xs={12}>
-                     <Button className={classes.btn} onClick={this.toggleTimer}>
+                     <Button className={classes.btn} onClick={this.toggleTimer} style={{color: btnTextColor}}>
                         {this.state.btnName}
                      </Button>
                   </Grid>
