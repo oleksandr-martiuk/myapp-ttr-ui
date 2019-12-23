@@ -118,7 +118,6 @@ class TimeTracker extends Component<any, any> {
    private handleChange = (ev: any) => this.setState({task: ev.target.value});
 
    private addTask (ev: any) {
-      console.log(this.state.task);
       if (ev.key === 'Enter') {
          const tasks = this.state.tasks;
          tasks.push({
@@ -133,12 +132,9 @@ class TimeTracker extends Component<any, any> {
    }
 
    private removeTask (index: number) {
-      console.log(index);
       const { tasks } = this.state;
       const updatedTaskList = tasks.filter((task: any, i: number) => (index !== i));
-      console.log(tasks);
       this.setState({tasks: updatedTaskList});
-      console.log('--------------------------------------------');
    }
 }
 
