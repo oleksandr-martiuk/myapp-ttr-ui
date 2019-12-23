@@ -6,7 +6,12 @@
       "withTest": true
     },
     "withStory": false,
-    "withLazy": true
+    "withLazy": true,
+    "css": {
+      "preprocessor": "scss",
+      "module": false,
+      "withStyle": false
+    }
   },
   "usesTypeScript": true
 }

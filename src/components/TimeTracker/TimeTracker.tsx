@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import clsx from 'clsx';
 import TimeReports from "./TimeReports/TimeReports";
 import Timer from "./Timer/Timer";
+import Hide from "../../shared/components/Hide/Hide";
+import AppMenu from "../../shared/components/Menu/Menu";
 
 const useStyles = makeStyles((theme: Theme) =>
    createStyles({
@@ -36,7 +38,7 @@ export default function TimeTracker() {
    return (
       <div>
          <Grid container>
-            <Grid className={clsx(root)} xs={2}>MENU</Grid>
+            <Grid className={clsx(root)} xs={2}><AppMenu/></Grid>
 
             <Grid container className={clsx(root)} xs={8}>
                <Grid className={clsx(timer, textCenter)} xs={12}>
@@ -47,7 +49,7 @@ export default function TimeTracker() {
                </Grid>
             </Grid>
 
-            <Grid className={clsx(root, textRight)} xs={2}>HIDE button</Grid>
+            <Grid className={clsx(root, textRight)} xs={2}><Hide/></Grid>
          </Grid>
       </div>
    );
