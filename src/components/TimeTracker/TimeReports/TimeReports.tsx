@@ -19,6 +19,7 @@ const styles = (theme: Theme) => ({
          border: `0.5px solid ${theme.palette.primary.dark}`,
          '&:hover': {
             backgroundColor: theme.palette.background.paper,
+            color: theme.palette.secondary.main,
          }
       },
       '& .MuiList-root': {
@@ -34,13 +35,15 @@ const styles = (theme: Theme) => ({
 const TaskInput = withStyles((theme: Theme) =>
    createStyles({
       root: {
+         margin: theme.spacing(0, 0, 3, 0),
          width: '100%',
          '& .MuiFormLabel-root': {
             fontSize: '15px'
          },
          '& .MuiInput-underline': {
+            borderBottom: `0.5px solid ${theme.palette.background.paper}`,
             '&:hover:not(.Mui-disabled):before': {
-               borderBottom: `0.5px solid ${theme.palette.primary.main}`
+               borderBottom: `0.5px solid ${theme.palette.primary.main}`,
             }
          }
       },
@@ -65,7 +68,8 @@ class TimeTracker extends Component<any, any> {
             { description: "TEST #003", time: 1577093616912 },
             { description: "TEST #004", time: 1577093618614 },
             { description: "TEST #005", time: 1577093620145 }
-         ]
+         ],
+         task: ""
       };
    }
 
@@ -76,7 +80,13 @@ class TimeTracker extends Component<any, any> {
          <div>
 
             <Grid container>
-               <TaskInput id="task-input"  label="Add task here..." onKeyPress={(event) => this.addTask(event)}/>
+               <TaskInput
+                  id="task-input"
+                  label="Add new report here"
+                  value={this.state.task}
+                  onKeyPress={(event) => this.addTask(event)}
+                  onChange={this.handleChange}
+               />
             </Grid>
 
             <Grid container className={clsx( classes.block, classes.root )}>
@@ -88,13 +98,15 @@ class TimeTracker extends Component<any, any> {
                </Grid>
 
                <List component="nav" aria-label="main mailbox folders">
-                  {this.state.tasks.map((task: any, index: number) => (
-                     <>
+                  {this.state.tasks.map((task: any, index: number) => {
+                     const primaryText = (index + 1) + ". " + task.description;
+
+                     return (<>
                         <ListItem button key={index}>
-                           <ListItemText primary={++index + ". " + task.description} />
+                           <ListItemText primary={primaryText} onClick={() => this.removeTask(index)}/>
                         </ListItem>
-                     </>
-                  ))}
+                     </>);
+                  })}
                </List>
 
             </Grid>
@@ -103,7 +115,10 @@ class TimeTracker extends Component<any, any> {
       )
    };
 
+   private handleChange = (ev: any) => this.setState({task: ev.target.value});
+
    private addTask (ev: any) {
+      console.log(this.state.task);
       if (ev.key === 'Enter') {
          const tasks = this.state.tasks;
          tasks.push({
@@ -111,12 +126,19 @@ class TimeTracker extends Component<any, any> {
             time: new Date().getTime()
          });
 
-         this.setState({ tasks: tasks });
-
-         console.log('TASKS: ', this.state.tasks);
+         this.setState({ tasks: tasks, task: '' });
 
          ev.preventDefault();
       }
+   }
+
+   private removeTask (index: number) {
+      console.log(index);
+      const { tasks } = this.state;
+      const updatedTaskList = tasks.filter((task: any, i: number) => (index !== i));
+      console.log(tasks);
+      this.setState({tasks: updatedTaskList});
+      console.log('--------------------------------------------');
    }
 }
 
