@@ -5,6 +5,7 @@ import { Theme } from '@material-ui/core/styles';
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
 import clsx from "clsx";
 import moment from "moment";
+import { interval as i } from "../../../shared/constants";
 
 const styles = (theme: Theme) => ({
    digitalBlock: {
@@ -16,6 +17,7 @@ const styles = (theme: Theme) => ({
    },
    btn: {
       border: `1px solid ${theme.palette.text.primary}`,
+      margin: theme.spacing(1, 0, 0 , 0),
       padding: theme.spacing(0.2, 1),
    },
    digits: {
@@ -111,16 +113,13 @@ class Timer extends Component<any, any> {
       }
 
       let changeTime = +this.state.time;
-      const maxMs = 1000;
-      const maxSec = 60;
-      const maxMin = 60;
 
       if (timeSegment === 'hours') {
-         changeTime += vary * (maxMin * maxSec * maxMs);
+         changeTime += vary * (i.m.max * i.s.max * i.ms.max);
       } else if (timeSegment === 'minutes') {
-         changeTime += vary * (maxSec * maxMs);
+         changeTime += vary * (i.s.max * i.ms.max);
       } else if (timeSegment === 'seconds') {
-         changeTime += vary * maxMs;
+         changeTime += vary * i.ms.max;
       }
 
       if (changeTime >= 0) {
@@ -142,49 +141,49 @@ class Timer extends Component<any, any> {
             <Grid container>
 
                <Grid container>
-                  <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime('hours', 1)}/>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.h.name, 1)}/>
                   </Grid>
-                  <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime('minutes', 1)}/>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.m.name, 1)}/>
                   </Grid>
-                  <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime('seconds', 1)}/>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.s.name, 1)}/>
                   </Grid>
-                  <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
                </Grid>
 
                <Grid container>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={2}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.h}</Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={1}>:</Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.m}</Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={1}>:</Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.s}</Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.digits)} xs={2}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.h}</Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={1}>:</Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.m}</Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={1}>:</Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.s}</Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}></Grid>
                </Grid>
 
                <Grid container>
-                  <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
                      <ExpandMore className={arrowStyle} onClick={() => this.changeTime('hours', -1)}/>
                   </Grid>
-                  <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
                      <ExpandMore className={arrowStyle} onClick={() => this.changeTime('minutes', -1)}/>
                   </Grid>
-                  <Grid className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
                      <ExpandMore className={arrowStyle} onClick={() => this.changeTime('seconds', -1)}/>
                   </Grid>
-                  <Grid className={clsx(classes.digitalBlock)} xs={2}></Grid>
+                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
                </Grid>
 
                <Grid container>
-                  <Grid  className={classes.buttonBlock} xs={12}>
+                  <Grid item className={classes.buttonBlock} xs={12}>
                      <Button className={classes.btn} onClick={this.toggleTimer} style={{color: btnTextColor}}>
                         {this.state.btnName}
                      </Button>

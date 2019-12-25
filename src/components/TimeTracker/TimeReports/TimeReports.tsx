@@ -32,7 +32,7 @@ const styles = (theme: Theme) => ({
    }
 });
 
-const TaskInput = withStyles((theme: Theme) =>
+const ReportInput = withStyles((theme: Theme) =>
    createStyles({
       root: {
          margin: theme.spacing(0, 0, 3, 0),
@@ -45,15 +45,13 @@ const TaskInput = withStyles((theme: Theme) =>
             '&:hover:not(.Mui-disabled):before': {
                borderBottom: `0.5px solid ${theme.palette.primary.main}`,
             }
-         }
-      },
-      label: {
-         '& .MuiInput-formControl': {
+         },
+         '& label .MuiInput-formControl': {
             marginTop: '10px'
+         },
+         '& input': {
+            padding: theme.spacing(0, 0, 1, 0),
          }
-      },
-      input: {
-         padding: theme.spacing(0, 0, 1, 0),
       }
    })
 )(TextField);
@@ -80,7 +78,7 @@ class TimeTracker extends Component<any, any> {
          <div>
 
             <Grid container>
-               <TaskInput
+               <ReportInput
                   id="task-input"
                   label="Add new report here"
                   value={this.state.task}
@@ -91,7 +89,7 @@ class TimeTracker extends Component<any, any> {
 
             <Grid container className={clsx( classes.block, classes.root )}>
 
-               <Grid xs={12}>
+               <Grid item xs={12}>
                   <Typography variant="h4" align="center" color="primary" gutterBottom>
                      Tasks of SESSION:
                   </Typography>
@@ -101,11 +99,11 @@ class TimeTracker extends Component<any, any> {
                   {this.state.tasks.map((task: any, index: number) => {
                      const primaryText = (index + 1) + ". " + task.description;
 
-                     return (<>
+                     return (
                         <ListItem button key={index}>
                            <ListItemText primary={primaryText} onClick={() => this.removeTask(index)}/>
                         </ListItem>
-                     </>);
+                     );
                   })}
                </List>
 

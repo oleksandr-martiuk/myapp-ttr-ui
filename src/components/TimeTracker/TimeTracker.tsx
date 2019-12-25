@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import TimeReports from "./TimeReports/TimeReports";
 import Timer from "./Timer/Timer";
 import Hide from "../../shared/components/Hide/Hide";
-import AppMenu from "../../shared/components/Menu/Menu";
+import Menu from "../../shared/components/Menu/Menu";
 
 const useStyles = makeStyles((theme: Theme) =>
    createStyles({
@@ -38,18 +38,18 @@ export default function TimeTracker() {
    return (
       <div>
          <Grid container>
-            <Grid className={clsx(root)} xs={2}><AppMenu/></Grid>
+            <Grid item className={clsx(root)} xs={2}><Menu/></Grid>
 
-            <Grid container className={clsx(root)} xs={8}>
-               <Grid className={clsx(timer, textCenter)} xs={12}>
+            <Grid item className={clsx(root)} xs={8}>
+               <Grid item className={clsx(timer, textCenter)} xs={12}>
                   <Timer/>
                </Grid>
-               <Grid className={block} xs={12}>
+               <Grid item className={block} xs={12}>
                   <TimeReports/>
                </Grid>
             </Grid>
 
-            <Grid className={clsx(root, textRight)} xs={2}><Hide/></Grid>
+            <Grid item className={clsx(root, textRight)} xs={2}><Hide/></Grid>
          </Grid>
       </div>
    );
