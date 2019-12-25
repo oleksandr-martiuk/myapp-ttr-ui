@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import {Theme} from "@material-ui/core/styles";
 import {withStyles} from "@material-ui/styles";
+import ElectronWindow from "../../../shared/services/electron-window";
 
 const styles = (theme: Theme) => ({
    root: {
@@ -57,6 +58,8 @@ const ReportInput = withStyles((theme: Theme) =>
 )(TextField);
 
 class TimeTracker extends Component<any, any> {
+   private window: ElectronWindow;
+
    constructor(readonly props: any) {
       super(props);
       this.state = {
@@ -69,6 +72,7 @@ class TimeTracker extends Component<any, any> {
          ],
          task: ""
       };
+      this.window = new ElectronWindow();
    }
 
    public render () {
@@ -124,6 +128,8 @@ class TimeTracker extends Component<any, any> {
          });
 
          this.setState({ tasks: tasks, task: '' });
+
+         this.window.hide();
 
          ev.preventDefault();
       }

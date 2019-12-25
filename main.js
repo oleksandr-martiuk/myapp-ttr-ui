@@ -19,7 +19,8 @@ const createWindow = () => {
       center: true,
       autoHideMenuBar: true,
       webPreferences: {
-         nodeIntegration: true
+         nodeIntegration: true,
+         preload: __dirname + '/preload.js'
       },
       icon: 'public/images/logo.ico'
    });
