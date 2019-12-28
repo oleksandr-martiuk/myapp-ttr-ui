@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import clsx from 'clsx';
-import TimeReports from "./TimeReports/TimeReports";
-import Timer from "./Timer/Timer";
+import Reports from "./Reports/Reports.component";
+import Timer from "./Timer/Timer.component";
 import Hide from "../../shared/components/Hide/Hide";
 import Menu from "../../shared/components/Menu/Menu";
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
    }),
 );
 
-export default function TimeTracker() {
+export default function TimeReports() {
    const {root, block, timer, textCenter, textRight} = useStyles();
 
    return (
@@ -45,7 +45,7 @@ export default function TimeTracker() {
                   <Timer/>
                </Grid>
                <Grid item className={block} xs={12}>
-                  <TimeReports/>
+                  <Reports/>
                </Grid>
             </Grid>
 

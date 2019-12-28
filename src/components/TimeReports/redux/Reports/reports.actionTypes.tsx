@@ -1,0 +1,3 @@
+export const CREATE_REPORT = "CREATE_REPORT";
+export const READ_REPORTS = "READ_REPORTS";
+export const DELETE_REPORT = "DELETE_REPORT";

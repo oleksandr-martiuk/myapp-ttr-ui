@@ -13,7 +13,7 @@ let mainWindow;
 
 const createWindow = () => {
    mainWindow = new BrowserWindow({
-      // fullscreen: true, // TODO: USER-mode
+      fullscreen: true, // TODO: USER-mode
       width: 1000,
       height: 700,
       center: true,
@@ -32,7 +32,7 @@ const createWindow = () => {
    });
    mainWindow.loadURL(startUrl);
 
-   mainWindow.webContents.openDevTools(); // TODO: DEV-mode
+   // mainWindow.webContents.openDevTools(); // TODO: DEV-mode
 
    mainWindow.on('closed', function () {
       mainWindow = null

@@ -1,0 +1,184 @@
+import React, {Component} from 'react';
+import clsx from 'clsx';
+import {
+   createStyles,
+   Grid,
+   List,
+   ListItem,
+   ListItemText,
+   TextField, Typography
+} from "@material-ui/core";
+import {Theme} from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/styles";
+import ElectronWindow from "../../../shared/services/electron-window";
+import {connect} from "react-redux";
+import {createReport, deleteReport, readReports} from "../redux/Reports/reports.services";
+
+const styles = (theme: Theme) => ({
+   root: {
+      padding: theme.spacing(0, 1),
+      '& .MuiListItem-root': {
+         padding: theme.spacing(0.2, 1),
+         border: `0.5px solid ${theme.palette.primary.dark}`,
+         '&:hover': {
+            backgroundColor: theme.palette.background.paper,
+            color: theme.palette.secondary.main,
+         }
+      },
+      '& .MuiList-root': {
+         width: '100%'
+      }
+   },
+   block: {
+      padding: theme.spacing(0.2),
+      margin: theme.spacing(0.5, 0),
+   }
+});
+
+const ReportInput = withStyles((theme: Theme) =>
+   createStyles({
+      root: {
+         margin: theme.spacing(0, 0, 3, 0),
+         width: '100%',
+         '& .MuiFormLabel-root': {
+            fontSize: '15px'
+         },
+         '& .MuiInput-underline': {
+            borderBottom: `0.5px solid ${theme.palette.background.paper}`,
+            '&:hover:not(.Mui-disabled):before': {
+               borderBottom: `0.5px solid ${theme.palette.primary.main}`,
+            }
+         },
+         '& label .MuiInput-formControl': {
+            marginTop: '10px'
+         },
+         '& input': {
+            padding: theme.spacing(0, 0, 1, 0),
+         }
+      }
+   })
+)(TextField);
+
+class Reports extends Component<any, any> {
+   private window: ElectronWindow;
+   // public reports: Reports; // TODO: could be removed
+
+   constructor(readonly props: any) {
+      super(props);
+      this.state = { // TODO: could be removed
+         reports: [],
+         report: ""
+      };
+      // this.reports = new Reports(); // TODO: could be removed
+      this.window = new ElectronWindow();
+   }
+
+   componentDidMount(): void {
+      const sessionId = '5e048d711c9d440000648ac9'; // TODO: use REDUX for 'SessionId'
+      this.props.onReadReports(sessionId).then((result: any) => {
+         console.log(this.props);
+      });
+   }
+
+   public render () {
+      const { classes } = this.props;
+
+      return (
+         <div>
+
+            <Grid container>
+               <ReportInput
+                  id="report-input"
+                  label="Add new report here"
+                  value={this.state.report}
+                  onKeyPress={(event) => this.addReport(event)}
+                  onChange={this.handleChange}
+               />
+            </Grid>
+
+            <Grid container className={clsx( classes.block, classes.root )}>
+
+               <Grid item xs={12}>
+                  <Typography variant="h4" align="center" color="primary" gutterBottom>
+                     Session REPORTS:
+                  </Typography>
+               </Grid>
+
+               <List component="nav" aria-label="main mailbox folders">
+                  {this.props.reports.map((report: any, index: number) => {
+                     const primaryText = (index + 1) + ". " + report.description;
+
+                     console.log(JSON.stringify(report));
+                     console.log('-----------------------------');
+                     return (
+                        <ListItem button key={report.id}>
+                           <ListItemText primary={primaryText} onClick={() => this.deleteReport(report.id)}/>
+                        </ListItem>
+                     );
+                  })}
+               </List>
+
+            </Grid>
+
+         </div>
+      )
+   };
+
+   private handleChange = (ev: any): void => {
+      this.setState({report: ev.target.value});
+   };
+
+   private addReport (ev: any): void {
+      if (ev.key === 'Enter') {
+         this.createNewReport(ev.target.value);
+         this.window.hide();
+         ev.preventDefault();
+      }
+   }
+
+   private createNewReport (value: string): void {
+      const reportOptions = {
+         sessionId: "5e048d711c9d440000648ac9", // TODO: use REDUX for 'SessionId'
+         description: value,
+         timestamp: new Date().getTime(),
+         time: 27000000                         // TODO: use REDUX for 'time'
+      };
+
+      console.log('---> 1. createNewReport');
+
+      this.props.onCreateReport(reportOptions).then((result: any) => console.log('DONE: ', result));
+
+      // .then((result: any) => {
+      //    console.log('#1. DONE: result ===> ', result);
+      //    return this.reports.readReportsBySession(reportOptions.sessionId)
+      // })
+      // .then((result: any) => {
+      //    console.log('#2. DONE: result ===> ', result);
+      //    return this.setState({reports: result, report: ""})
+      // });
+   }
+
+   private deleteReport (id: number): void {
+      console.log('deleteReport ---> id: ', id);
+      // this.props.onCreateReport(reportOptions).then((result: any) => console.log('DONE: ', result));
+      // const { reports } = this.state;
+      // const updatedTaskList = reports.filter((report: any, i: number) => (index !== i));
+      // this.setState({reports: updatedTaskList});
+      this.props.onDeleteReport(id);
+   }
+}
+
+const mapStateToProps = (state: any) => ({
+   reports: state.reportsReducers.reports || []
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+   onCreateReport: (reportOptions: any) => createReport(dispatch, reportOptions),
+   onReadReports: (sessionId: string) => readReports(dispatch, sessionId),
+   onDeleteReport: (id: string) => deleteReport(dispatch, id),
+});
+
+export default connect (
+   mapStateToProps,
+   mapDispatchToProps
+)(withStyles(styles, { withTheme: true })(Reports));
