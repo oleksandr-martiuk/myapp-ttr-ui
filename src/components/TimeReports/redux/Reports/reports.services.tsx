@@ -1,4 +1,3 @@
-import { IReport } from "./types/report";
 import {createReportAction, deleteReportAction, readReportsAction} from "./reports.actions";
 import {IReportOptions, Reports} from "../../../../shared/services/requests/reports";
 

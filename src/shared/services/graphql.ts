@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { env } from '../../environments/environment';
 
 interface IQeuryOptions {
    methodName: string;
@@ -27,16 +26,21 @@ export class GraphQlService {
    }
 
    private static async sendRequest(query: object, methodName: string): Promise<object | object[] | null> {
-      const result = await axios.post(env.API_BASE_URL, query);
+      console.log(query);
+      // @ts-ignore // TODO: should be fixed
+      const result = await axios.post(process.env.REACT_APP_API_BASE_URL, query);
       if (!result) {
          return null;
       }
+
+      console.log('GraphQL: RESULT ===> ', result);
+
       return result.data.data[methodName];
    }
 
    private getQueryData (options: IGraphOptions): IQuery {
-      const { queryType, methodName, resFields, params } = options;
-      const queryParams = this.getQueryParams(queryType, params);
+      const { queryType, methodName, resFields } = options;
+      const queryParams = (options.params) ? this.getQueryParams(queryType, options.params) : "";
 
       return {
          query: `${queryType} { ${methodName} ${queryParams} { ${resFields.join(" ")} } }`

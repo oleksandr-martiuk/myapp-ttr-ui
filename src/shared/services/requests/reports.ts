@@ -3,8 +3,6 @@ import { GraphQlService } from "../graphql";
 export interface IReportOptions {
    sessionId: string;
    description: string;
-   timestamp: number;
-   time: number;
 }
 interface IReport extends IReportOptions {
    id?: string;
@@ -15,7 +13,7 @@ export class Reports extends GraphQlService {
 
    constructor() {
       super();
-      this.reportFields = ['id', 'sessionId', 'description', 'timestamp', 'time'];
+      this.reportFields = ['id', 'sessionId', 'description'];
    }
 
    public async createReport (params: IReportOptions, resFields?: string[]): Promise<IReport[]> {

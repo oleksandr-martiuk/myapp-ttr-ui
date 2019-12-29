@@ -3,16 +3,13 @@ import { withStyles } from '@material-ui/styles';
 import {Button, Grid} from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
-import clsx from "clsx";
 import moment from "moment";
-import { interval as i } from "../../../shared/constants";
+import {interval as i, changeWay, SESSION_UPDATE_TIME} from "../../../shared/constants";
+import {connect} from "react-redux";
+import {createSession, getLastSession} from "../redux/Session/session.services";
 
 const styles = (theme: Theme) => ({
-   digitalBlock: {
-      textAlign: 'center',
-   },
    buttonBlock: {
-      textAlign: 'center',
       alignContent: 'center',
    },
    btn: {
@@ -22,9 +19,9 @@ const styles = (theme: Theme) => ({
    },
    digits: {
       fontSize: '80px',
-      height: '60px',
+      height: '62px',
+      lineHeight: '64px',
       display:'flex',
-      flexDirection: 'column',
       justifyContent: 'center',
    },
    arrowBlock: {
@@ -45,7 +42,7 @@ const styles = (theme: Theme) => ({
          transform: 'scale(1.3)'
       },
    }
-}) as any; // TODO: fix it
+});
 
 class Timer extends Component<any, any> {
    public timer: any;
@@ -54,7 +51,7 @@ class Timer extends Component<any, any> {
       super(props);
       this.state = {
          start: 0,
-         time: 28800000,
+         time: this.props.session.time,
          isOn: false,
          btnName: 'Start',
          timer: { h: 0, m: 0, s: 0 }
@@ -62,76 +59,11 @@ class Timer extends Component<any, any> {
       this.timer = 0;
    }
 
-   runTimer = () => {
-      this.setState({
-         start: Date.now() + this.state.time,
-         isOn: true,
-         btnName: 'Stop',
-      });
-      this.timer = setInterval(() => {
-         const time = this.state.start - Date.now();
-         this.updateTimer(time);
-      }, 1000);
-   };
-
-   updateTimer = (time: number) => {
-      const updatedTime: {[index: string]:any} = {
-         h: Math.trunc(moment.duration(time).asHours()),
-         m: moment.duration(time).minutes(),
-         s: moment.duration(time).seconds()
-      };
-
-      for (let name in updatedTime) {
-         if (updatedTime[name] < 0) {
-            updatedTime[name] = -updatedTime[name];
-         }
-      }
-
-      this.setState({
-         time: time,
-         timer: {
-            h: (updatedTime.h < 10) ? "0" + updatedTime.h : updatedTime.h,
-            m: (updatedTime.m < 10) ? "0" + updatedTime.m : updatedTime.m,
-            s: (updatedTime.s < 10) ? "0" + updatedTime.s : updatedTime.s
-         }
-      });
-   };
-
-   stopTimer = () => {
-      this.setState({
-         isOn: false,
-         btnName: 'Start',
-      });
-      clearInterval(this.timer);
-   };
-
-   toggleTimer = () => (this.state.isOn) ? this.stopTimer() : this.runTimer();
-
-   changeTime = (timeSegment = "", vary = 0) => {
-      if (this.state.start) {
-         return;
-      }
-
-      let changeTime = +this.state.time;
-
-      if (timeSegment === 'hours') {
-         changeTime += vary * (i.m.max * i.s.max * i.ms.max);
-      } else if (timeSegment === 'minutes') {
-         changeTime += vary * (i.s.max * i.ms.max);
-      } else if (timeSegment === 'seconds') {
-         changeTime += vary * i.ms.max;
-      }
-
-      if (changeTime >= 0) {
-         this.updateTimer(changeTime);
-      }
-   };
-
-   componentDidMount(): void {
-      this.updateTimer(this.state.time);
+   public componentDidMount(): void {
+      this.props.onGetLastSession().then(() => this.updateTimer(this.props.session.time));
    }
 
-   render() {
+   public render() {
       const { classes } = this.props;
       const btnTextColor = (this.state.btnName === 'Start') ? "#60daaa" : "#B00020";
       const arrowStyle = (this.state.start) ? classes.arrowDisabled : classes.arrow;
@@ -141,45 +73,45 @@ class Timer extends Component<any, any> {
             <Grid container>
 
                <Grid container>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.h.name, 1)}/>
+                  <Grid item xs={2}></Grid>
+                  <Grid item xs={2} className={classes.arrowBlock}>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.h.name, changeWay.up)}/>
                   </Grid>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.m.name, 1)}/>
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={2} className={classes.arrowBlock}>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.m.name, changeWay.up)}/>
                   </Grid>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.s.name, 1)}/>
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={2} className={classes.arrowBlock}>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.s.name, changeWay.up)}/>
                   </Grid>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
+                  <Grid item xs={2}></Grid>
                </Grid>
 
                <Grid container>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.h}</Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={1}>:</Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.m}</Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={1}>:</Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}>{this.state.timer.s}</Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.digits)} xs={2}></Grid>
+                  <Grid item xs={2} className={classes.digits}></Grid>
+                  <Grid item xs={2} className={classes.digits}>{this.state.timer.h}</Grid>
+                  <Grid item xs={1} className={classes.digits}>:</Grid>
+                  <Grid item xs={2} className={classes.digits}>{this.state.timer.m}</Grid>
+                  <Grid item xs={1} className={classes.digits}>:</Grid>
+                  <Grid item xs={2} className={classes.digits}>{this.state.timer.s}</Grid>
+                  <Grid item xs={2} className={classes.digits}></Grid>
                </Grid>
 
                <Grid container>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime('hours', -1)}/>
+                  <Grid item xs={2}></Grid>
+                  <Grid item xs={2}className={classes.arrowBlock}>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(i.h.name, changeWay.down)}/>
                   </Grid>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime('minutes', -1)}/>
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={2} className={classes.arrowBlock}>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(i.m.name, changeWay.down)}/>
                   </Grid>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={1}></Grid>
-                  <Grid item className={clsx(classes.digitalBlock, classes.arrowBlock)} xs={2}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime('seconds', -1)}/>
+                  <Grid item xs={1}></Grid>
+                  <Grid item xs={2} className={classes.arrowBlock}>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(i.s.name, changeWay.down)}/>
                   </Grid>
-                  <Grid item className={clsx(classes.digitalBlock)} xs={2}></Grid>
+                  <Grid item xs={2}></Grid>
                </Grid>
 
                <Grid container>
@@ -194,6 +126,104 @@ class Timer extends Component<any, any> {
          </div>
       );
    }
+
+   private runTimer = () => {
+      this.setState({
+         start: Date.now() + this.state.time,
+         isOn: true,
+         btnName: 'Stop',
+      });
+      this.timer = setInterval(() => {
+         const time = this.state.start - Date.now();
+         this.updateSessionTime(time);
+         this.updateTimer(time);
+      }, 1000);
+   };
+
+   private updateSessionTime (time: number): void {
+      if (this.props.session.time - this.state.time > SESSION_UPDATE_TIME) {
+         this.setState({time: time});
+         console.log('--------------------------------------');
+         console.log('this.state.time: ', this.state.time);
+         console.log('this.props.session.time: ', this.props.session.time);
+         console.log('--------------------------------------');
+      }
+   }
+
+   private updateTimer = (time: number) => {
+      const updatedTime: {[index: string]:any} = {
+         h: Math.trunc(moment.duration(time).asHours()),
+         m: moment.duration(time).minutes(),
+         s: moment.duration(time).seconds()
+      };
+
+      for (let name in updatedTime) {
+         if (updatedTime[name] < 0) {
+            updatedTime[name] = -updatedTime[name];
+         }
+      }
+
+      console.log(time + ' | ', this.state.time);
+      this.setState({
+         time: time,
+         timer: {
+            h: (updatedTime.h < 10) ? "0" + updatedTime.h : updatedTime.h,
+            m: (updatedTime.m < 10) ? "0" + updatedTime.m : updatedTime.m,
+            s: (updatedTime.s < 10) ? "0" + updatedTime.s : updatedTime.s
+         }
+      });
+   };
+
+   private stopTimer = () => {
+      this.setState({
+         isOn: false,
+         btnName: 'Start',
+      });
+      clearInterval(this.timer);
+   };
+
+   private toggleTimer = () => (this.state.isOn) ? this.stopTimer() : this.runTimer();
+
+   private changeTime = (timeSegment = "", varyDirection = "") => {
+      if (this.state.start) {
+         return;
+      }
+
+      let changeTime = +this.state.time;
+      let vary = 0;
+
+      if (varyDirection === changeWay.up) {
+         vary = 1;
+      } else if (varyDirection === changeWay.down) {
+         vary = -1;
+      }
+
+      if (timeSegment === i.h.name) {
+         changeTime += vary * (i.m.max * i.s.max * i.ms.max);
+      } else if (timeSegment === i.m.name) {
+         changeTime += vary * (i.s.max * i.ms.max);
+      } else if (timeSegment === i.s.name) {
+         changeTime += vary * i.ms.max;
+      }
+
+      if (changeTime >= 0) {
+         this.updateTimer(changeTime);
+      }
+   };
 }
 
-export default withStyles(styles, { withTheme: true })(Timer);
+const mapStateToProps = (state: any) => ({
+   session: state.sessionReducers.session || 0
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+   onCreateSession: (sessionOptions: any) => createSession(dispatch, sessionOptions),
+   onGetLastSession: () => getLastSession(dispatch)
+});
+
+export default connect (
+   mapStateToProps,
+   mapDispatchToProps
+)(
+   withStyles(styles, { withTheme: true })(Timer)
+);

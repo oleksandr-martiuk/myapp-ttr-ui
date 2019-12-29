@@ -61,23 +61,18 @@ const ReportInput = withStyles((theme: Theme) =>
 
 class Reports extends Component<any, any> {
    private window: ElectronWindow;
-   // public reports: Reports; // TODO: could be removed
 
    constructor(readonly props: any) {
       super(props);
-      this.state = { // TODO: could be removed
-         reports: [],
+      this.state = {
          report: ""
       };
-      // this.reports = new Reports(); // TODO: could be removed
       this.window = new ElectronWindow();
    }
 
    componentDidMount(): void {
       const sessionId = '5e048d711c9d440000648ac9'; // TODO: use REDUX for 'SessionId'
-      this.props.onReadReports(sessionId).then((result: any) => {
-         console.log(this.props);
-      });
+      this.props.onReadReports(sessionId);
    }
 
    public render () {
@@ -108,8 +103,6 @@ class Reports extends Component<any, any> {
                   {this.props.reports.map((report: any, index: number) => {
                      const primaryText = (index + 1) + ". " + report.description;
 
-                     console.log(JSON.stringify(report));
-                     console.log('-----------------------------');
                      return (
                         <ListItem button key={report.id}>
                            <ListItemText primary={primaryText} onClick={() => this.deleteReport(report.id)}/>
@@ -130,7 +123,8 @@ class Reports extends Component<any, any> {
 
    private addReport (ev: any): void {
       if (ev.key === 'Enter') {
-         this.createNewReport(ev.target.value);
+         this.createNewReport(this.state.report);
+         this.setState({report: ""});
          this.window.hide();
          ev.preventDefault();
       }
@@ -140,30 +134,15 @@ class Reports extends Component<any, any> {
       const reportOptions = {
          sessionId: "5e048d711c9d440000648ac9", // TODO: use REDUX for 'SessionId'
          description: value,
-         timestamp: new Date().getTime(),
-         time: 27000000                         // TODO: use REDUX for 'time'
       };
 
       console.log('---> 1. createNewReport');
 
       this.props.onCreateReport(reportOptions).then((result: any) => console.log('DONE: ', result));
-
-      // .then((result: any) => {
-      //    console.log('#1. DONE: result ===> ', result);
-      //    return this.reports.readReportsBySession(reportOptions.sessionId)
-      // })
-      // .then((result: any) => {
-      //    console.log('#2. DONE: result ===> ', result);
-      //    return this.setState({reports: result, report: ""})
-      // });
    }
 
    private deleteReport (id: number): void {
       console.log('deleteReport ---> id: ', id);
-      // this.props.onCreateReport(reportOptions).then((result: any) => console.log('DONE: ', result));
-      // const { reports } = this.state;
-      // const updatedTaskList = reports.filter((report: any, i: number) => (index !== i));
-      // this.setState({reports: updatedTaskList});
       this.props.onDeleteReport(id);
    }
 }
@@ -181,4 +160,6 @@ const mapDispatchToProps = (dispatch: any) => ({
 export default connect (
    mapStateToProps,
    mapDispatchToProps
-)(withStyles(styles, { withTheme: true })(Reports));
+)(
+   withStyles(styles, { withTheme: true })(Reports)
+);

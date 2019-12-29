@@ -1,0 +1,2 @@
+export const CREATE_SESSION = "CREATE_SESSION";
+export const GET_LAST_SESSION = "GET_LAST_SESSION";

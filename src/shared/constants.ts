@@ -16,3 +16,10 @@ export const interval = {
       name: 'hour'
    }
 };
+
+export const changeWay = {
+   up: 'up',
+   down: 'down'
+};
+
+export const SESSION_UPDATE_TIME = 3000;
