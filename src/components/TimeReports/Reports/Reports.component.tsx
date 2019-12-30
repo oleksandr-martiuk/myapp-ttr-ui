@@ -14,7 +14,6 @@ import ElectronWindow from "../../../shared/services/electron-window";
 import {connect} from "react-redux";
 import {createReport, deleteReport, readReports} from "../redux/Reports/reports.services";
 import {getLastSession} from "../redux/Session/session.services";
-import {ISession} from "../redux/Session/types/session";
 
 const styles = (theme: Theme) => ({
    root: {
