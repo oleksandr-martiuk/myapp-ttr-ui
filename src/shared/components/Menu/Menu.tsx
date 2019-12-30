@@ -91,11 +91,9 @@ class Menu extends Component<any, any> {
 
    private handleClick = () => {
       this.setState({ onWindowShow: !this.state.onWindowShow });
-      console.log('Menu button works!');
    };
 
    private handleItemClick = (key: string) => {
-      console.log(key);
       if (key === 'createSession') {
          const sessionOptions = {
             time: process.env.REACT_APP_START_TIME,

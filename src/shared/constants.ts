@@ -22,4 +22,4 @@ export const changeWay = {
    down: 'down'
 };
 
-export const SESSION_UPDATE_TIME = 3000;
+export const SESSION_UPDATE_TIME = 10000; // TODO: move to the Environment variables

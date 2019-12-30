@@ -13,6 +13,8 @@ import {withStyles} from "@material-ui/styles";
 import ElectronWindow from "../../../shared/services/electron-window";
 import {connect} from "react-redux";
 import {createReport, deleteReport, readReports} from "../redux/Reports/reports.services";
+import {getLastSession} from "../redux/Session/session.services";
+import {ISession} from "../redux/Session/types/session";
 
 const styles = (theme: Theme) => ({
    root: {
@@ -71,8 +73,8 @@ class Reports extends Component<any, any> {
    }
 
    componentDidMount(): void {
-      const sessionId = '5e048d711c9d440000648ac9'; // TODO: use REDUX for 'SessionId'
-      this.props.onReadReports(sessionId);
+      this.props.onGetLastSession()
+         .then((sessionAction: any) => this.props.onReadReports(sessionAction.payload.id));
    }
 
    public render () {
@@ -132,29 +134,28 @@ class Reports extends Component<any, any> {
 
    private createNewReport (value: string): void {
       const reportOptions = {
-         sessionId: "5e048d711c9d440000648ac9", // TODO: use REDUX for 'SessionId'
+         sessionId: (this.props.session) ? this.props.session.id : '', // TODO: use REDUX for 'SessionId'
          description: value,
       };
 
-      console.log('---> 1. createNewReport');
-
-      this.props.onCreateReport(reportOptions).then((result: any) => console.log('DONE: ', result));
+      this.props.onCreateReport(reportOptions);
    }
 
    private deleteReport (id: number): void {
-      console.log('deleteReport ---> id: ', id);
       this.props.onDeleteReport(id);
    }
 }
 
 const mapStateToProps = (state: any) => ({
-   reports: state.reportsReducers.reports || []
+   reports: state.reportsReducers.reports || [],
+   session: state.sessionReducers.session || null
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
    onCreateReport: (reportOptions: any) => createReport(dispatch, reportOptions),
    onReadReports: (sessionId: string) => readReports(dispatch, sessionId),
    onDeleteReport: (id: string) => deleteReport(dispatch, id),
+   onGetLastSession: () => getLastSession(dispatch),
 });
 
 export default connect (

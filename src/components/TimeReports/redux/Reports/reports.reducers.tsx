@@ -11,9 +11,6 @@ const initialState = {
 };
 
 const reportsReducers = (state = initialState, action: IReportAction) => {
-   console.log('5.1 reportsReducers: ===> state: ', state);
-   console.log('5.2 reportsReducers: ===> action: ', action);
-
    switch (action.type) {
       case CREATE_REPORT:
          return {

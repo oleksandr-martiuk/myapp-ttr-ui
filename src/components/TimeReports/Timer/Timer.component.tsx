@@ -6,7 +6,7 @@ import { ExpandMore, ExpandLess } from "@material-ui/icons";
 import moment from "moment";
 import {interval as i, changeWay, SESSION_UPDATE_TIME} from "../../../shared/constants";
 import {connect} from "react-redux";
-import {createSession, getLastSession} from "../redux/Session/session.services";
+import {createSession, getLastSession, updateSession} from "../redux/Session/session.services";
 
 const styles = (theme: Theme) => ({
    buttonBlock: {
@@ -51,7 +51,7 @@ class Timer extends Component<any, any> {
       super(props);
       this.state = {
          start: 0,
-         time: this.props.session.time,
+         time: 0,
          isOn: false,
          btnName: 'Start',
          timer: { h: 0, m: 0, s: 0 }
@@ -141,12 +141,9 @@ class Timer extends Component<any, any> {
    };
 
    private updateSessionTime (time: number): void {
-      if (this.props.session.time - this.state.time > SESSION_UPDATE_TIME) {
+      if (this.props.session.time - this.state.time >= SESSION_UPDATE_TIME) {
          this.setState({time: time});
-         console.log('--------------------------------------');
-         console.log('this.state.time: ', this.state.time);
-         console.log('this.props.session.time: ', this.props.session.time);
-         console.log('--------------------------------------');
+         this.props.onUpdateSession(this.props.session.id, {time: this.state.time});
       }
    }
 
@@ -163,7 +160,6 @@ class Timer extends Component<any, any> {
          }
       }
 
-      console.log(time + ' | ', this.state.time);
       this.setState({
          time: time,
          timer: {
@@ -213,12 +209,13 @@ class Timer extends Component<any, any> {
 }
 
 const mapStateToProps = (state: any) => ({
-   session: state.sessionReducers.session || 0
+   session: state.sessionReducers.session
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
    onCreateSession: (sessionOptions: any) => createSession(dispatch, sessionOptions),
-   onGetLastSession: () => getLastSession(dispatch)
+   onGetLastSession: () => getLastSession(dispatch),
+   onUpdateSession: (id: string, updateSessionFields: any) => updateSession(dispatch, id, updateSessionFields),
 });
 
 export default connect (

@@ -42,7 +42,6 @@ export class Reports extends GraphQlService {
          resFields: (resFields) ? resFields : this.reportFields,
          params: { id }
       };
-      console.log('options: ', options);
 
       return this.query(options);
    }

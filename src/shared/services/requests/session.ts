@@ -1,8 +1,8 @@
 import { GraphQlService } from "../graphql";
 
 export interface ISessionOptions {
-   time: string;
-   noteTime: string;
+   time?: string;
+   noteTime?: string;
 }
 interface ISession extends ISessionOptions {
    id?: string;
@@ -16,22 +16,33 @@ export class Session extends GraphQlService {
       this.sessionFields = ['id', 'time', 'noteTime'];
    }
 
-   public async createSession (params: ISessionOptions, resFields?: string[]): Promise<ISession> {
+   public async createSession (params: ISessionOptions): Promise<ISession> {
       const options = {
          methodName: 'createSession',
-         resFields: (resFields) ? resFields : this.sessionFields,
-         params
+         params,
+         resFields: this.sessionFields,
       };
 
       return this.mutate(options);
    }
 
-   public async getLastSession (resFields?: string[]): Promise<ISession> {
+   public async getLastSession (): Promise<ISession> {
       const options = {
          methodName: 'readLastSession',
-         resFields: (resFields) ? resFields : this.sessionFields
+         resFields: this.sessionFields,
       };
 
       return this.query(options);
+   }
+
+   public async updateSession (params: {id: string}, updateOptions: ISessionOptions) {
+      const options = {
+         methodName: 'updateSession',
+         params,
+         update: updateOptions,
+         resFields: this.sessionFields,
+      };
+
+      return this.mutate(options);
    }
 }

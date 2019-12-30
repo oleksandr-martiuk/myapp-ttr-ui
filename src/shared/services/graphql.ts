@@ -4,6 +4,7 @@ interface IQeuryOptions {
    methodName: string;
    resFields: string[];
    params?: object;
+   update?: object;
 }
 interface IGraphOptions extends IQeuryOptions {
    queryType: string;
@@ -20,41 +21,42 @@ export class GraphQlService {
 
    public async mutate (options: IQeuryOptions): Promise<any> {
       const query = this.getQueryData({...options, queryType: 'mutation'});
-      console.log(query);
-
       return GraphQlService.sendRequest(query, options.methodName);
    }
 
    private static async sendRequest(query: object, methodName: string): Promise<object | object[] | null> {
-      console.log(query);
       // @ts-ignore // TODO: should be fixed
       const result = await axios.post(process.env.REACT_APP_API_BASE_URL, query);
       if (!result) {
          return null;
       }
 
-      console.log('GraphQL: RESULT ===> ', result);
-
       return result.data.data[methodName];
    }
 
    private getQueryData (options: IGraphOptions): IQuery {
       const { queryType, methodName, resFields } = options;
-      const queryParams = (options.params) ? this.getQueryParams(queryType, options.params) : "";
+      const queryParams = (options.params) ? this.getQueryParams(options) : "";
 
       return {
          query: `${queryType} { ${methodName} ${queryParams} { ${resFields.join(" ")} } }`
       };
    }
 
-   private getQueryParams (queryType: string, params?: object): string {
+   private getQueryParams (options: IGraphOptions): string {
+      const {queryType = '', params = null, update = null} = options;
+      let updateStr = '';
       let paramsStr = '';
+
+      if (update) {
+         updateStr = `, update: { ${this.stringify(update)} }`;
+      }
 
       if (params) {
          if (queryType === 'query') {
             paramsStr = '(' + this.stringify(params) + ')';
          } else if (queryType === 'mutation') {
-            paramsStr = '( input: {' + this.stringify(params) + '} )';
+            paramsStr = '( input: {' + this.stringify(params) + updateStr + '} )';
          }
       }
 
