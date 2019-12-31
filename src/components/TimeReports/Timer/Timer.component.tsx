@@ -4,7 +4,7 @@ import {Button, Grid} from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
 import moment from "moment";
-import {interval as i, changeWay, SESSION_UPDATE_TIME} from "../../../shared/constants";
+import {INTERVAL as _I, CHANGE_TIME, env} from "../../../shared/constants";
 import {connect} from "react-redux";
 import {createSession, getLastSession, updateSession} from "../redux/Session/session.services";
 
@@ -75,15 +75,15 @@ class Timer extends Component<any, any> {
                <Grid container>
                   <Grid item xs={2}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.h.name, changeWay.up)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.h.name, CHANGE_TIME.up)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.m.name, changeWay.up)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.m.name, CHANGE_TIME.up)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(i.s.name, changeWay.up)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.s.name, CHANGE_TIME.up)}/>
                   </Grid>
                   <Grid item xs={2}></Grid>
                </Grid>
@@ -101,15 +101,15 @@ class Timer extends Component<any, any> {
                <Grid container>
                   <Grid item xs={2}></Grid>
                   <Grid item xs={2}className={classes.arrowBlock}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(i.h.name, changeWay.down)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.h.name, CHANGE_TIME.down)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(i.m.name, changeWay.down)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.m.name, CHANGE_TIME.down)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(i.s.name, changeWay.down)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.s.name, CHANGE_TIME.down)}/>
                   </Grid>
                   <Grid item xs={2}></Grid>
                </Grid>
@@ -141,7 +141,7 @@ class Timer extends Component<any, any> {
    };
 
    private updateSessionTime (time: number): void {
-      if (this.props.session.time - this.state.time >= SESSION_UPDATE_TIME) {
+      if (this.props.session.time - this.state.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
          this.setState({time: time});
          this.props.onUpdateSession(this.props.session.id, {time: this.state.time});
       }
@@ -188,18 +188,18 @@ class Timer extends Component<any, any> {
       let changeTime = +this.state.time;
       let vary = 0;
 
-      if (varyDirection === changeWay.up) {
+      if (varyDirection === CHANGE_TIME.up) {
          vary = 1;
-      } else if (varyDirection === changeWay.down) {
+      } else if (varyDirection === CHANGE_TIME.down) {
          vary = -1;
       }
 
-      if (timeSegment === i.h.name) {
-         changeTime += vary * (i.m.max * i.s.max * i.ms.max);
-      } else if (timeSegment === i.m.name) {
-         changeTime += vary * (i.s.max * i.ms.max);
-      } else if (timeSegment === i.s.name) {
-         changeTime += vary * i.ms.max;
+      if (timeSegment === _I.h.name) {
+         changeTime += vary * (_I.m.max * _I.s.max * _I.ms.max);
+      } else if (timeSegment === _I.m.name) {
+         changeTime += vary * (_I.s.max * _I.ms.max);
+      } else if (timeSegment === _I.s.name) {
+         changeTime += vary * _I.ms.max;
       }
 
       if (changeTime >= 0) {

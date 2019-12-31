@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import clsx from 'clsx';
 import {connect} from "react-redux";
 import {createSession} from "../../../components/TimeReports/redux/Session/session.services";
 import {ISessionOptions} from "../../services/requests/session";
-import {hexToRgb, makeStyles, styled} from "@material-ui/core";
+import {styled} from "@material-ui/core";
 import {IMenuItem} from "./types/menu-item";
+import {MENU_ITEMS} from "../../constants";
 
 const menuBtnImg = require('../../images/menu_btn.png');
 
@@ -63,11 +63,7 @@ class Menu extends Component<any, any> {
       super(props);
       this.state = {
          onWindowShow: false,
-         items: [
-            {key: 'createSession', value: 'Create new SESSION'},
-            {key: 'results', value: 'Show results (graph)'},
-            {key: 'targets', value: 'Show targets (+ tasks)'},
-         ]
+         items: MENU_ITEMS
       }
    }
 
