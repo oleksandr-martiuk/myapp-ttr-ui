@@ -3,10 +3,10 @@ import { withStyles } from '@material-ui/styles';
 import {Button, Grid} from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 import { ExpandMore, ExpandLess } from "@material-ui/icons";
-import moment from "moment";
-import {INTERVAL as _I, CHANGE_TIME, env} from "../../../shared/constants";
+import {INTERVAL as _I, TIME_TURN, env} from "../../../shared/constants";
 import {connect} from "react-redux";
 import {createSession, getLastSession, updateSession} from "../redux/Session/session.services";
+import {formatTime} from "../../../shared/pipes/format-time.pipe";
 
 const styles = (theme: Theme) => ({
    buttonBlock: {
@@ -51,19 +51,22 @@ class Timer extends Component<any, any> {
       super(props);
       this.state = {
          start: 0,
-         time: 0,
+         time: 0, // TODO: move 'time' to REDUX
          isOn: false,
          btnName: 'Start',
          timer: { h: 0, m: 0, s: 0 }
       };
-      this.timer = 0;
    }
 
+   // TODO: move 'time' to REDUX
    public componentDidMount(): void {
-      this.props.onGetLastSession().then(() => this.updateTimer(this.props.session.time));
+      this.props.onGetLastSession()
+      // .then(() => this.updateTimer(this.props.session.time))
+      ;
    }
 
    public render() {
+      // styles
       const { classes } = this.props;
       const btnTextColor = (this.state.btnName === 'Start') ? "#60daaa" : "#B00020";
       const arrowStyle = (this.state.start) ? classes.arrowDisabled : classes.arrow;
@@ -75,41 +78,41 @@ class Timer extends Component<any, any> {
                <Grid container>
                   <Grid item xs={2}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.h.name, CHANGE_TIME.up)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.h.name, TIME_TURN.up)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.m.name, CHANGE_TIME.up)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.m.name, TIME_TURN.up)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.s.name, CHANGE_TIME.up)}/>
+                     <ExpandLess className={arrowStyle} onClick={() => this.changeTime(_I.s.name, TIME_TURN.up)}/>
                   </Grid>
                   <Grid item xs={2}></Grid>
                </Grid>
 
                <Grid container>
                   <Grid item xs={2} className={classes.digits}></Grid>
-                  <Grid item xs={2} className={classes.digits}>{this.state.timer.h}</Grid>
+                  <Grid item xs={2} className={classes.digits}>{formatTime(this.state.time).hour}</Grid>
                   <Grid item xs={1} className={classes.digits}>:</Grid>
-                  <Grid item xs={2} className={classes.digits}>{this.state.timer.m}</Grid>
+                  <Grid item xs={2} className={classes.digits}>{formatTime(this.state.time).minute}</Grid>
                   <Grid item xs={1} className={classes.digits}>:</Grid>
-                  <Grid item xs={2} className={classes.digits}>{this.state.timer.s}</Grid>
+                  <Grid item xs={2} className={classes.digits}>{formatTime(this.state.time).second}</Grid>
                   <Grid item xs={2} className={classes.digits}></Grid>
                </Grid>
 
                <Grid container>
                   <Grid item xs={2}></Grid>
                   <Grid item xs={2}className={classes.arrowBlock}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.h.name, CHANGE_TIME.down)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.h.name, TIME_TURN.down)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.m.name, CHANGE_TIME.down)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.m.name, TIME_TURN.down)}/>
                   </Grid>
                   <Grid item xs={1}></Grid>
                   <Grid item xs={2} className={classes.arrowBlock}>
-                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.s.name, CHANGE_TIME.down)}/>
+                     <ExpandMore className={arrowStyle} onClick={() => this.changeTime(_I.s.name, TIME_TURN.down)}/>
                   </Grid>
                   <Grid item xs={2}></Grid>
                </Grid>
@@ -128,47 +131,27 @@ class Timer extends Component<any, any> {
    }
 
    private runTimer = () => {
+      console.log('runTimer: this.props.session = ', this.props.session);
       this.setState({
-         start: Date.now() + this.state.time,
+         start: Date.now() + this.state.time, // TODO: move 'time' to REDUX
          isOn: true,
          btnName: 'Stop',
       });
       this.timer = setInterval(() => {
          const time = this.state.start - Date.now();
          this.updateSessionTime(time);
-         this.updateTimer(time);
+         this.setState({ time });
       }, 1000);
    };
 
    private updateSessionTime (time: number): void {
+      console.log('updateSessionTime ===> this.props.session.time: ', this.props.session.time);
+
       if (this.props.session.time - this.state.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
-         this.setState({time: time});
+         this.setState({time: time}); // TODO: move 'time' to REDUX
          this.props.onUpdateSession(this.props.session.id, {time: this.state.time});
       }
    }
-
-   private updateTimer = (time: number) => {
-      const updatedTime: {[index: string]:any} = {
-         h: Math.trunc(moment.duration(time).asHours()),
-         m: moment.duration(time).minutes(),
-         s: moment.duration(time).seconds()
-      };
-
-      for (let name in updatedTime) {
-         if (updatedTime[name] < 0) {
-            updatedTime[name] = -updatedTime[name];
-         }
-      }
-
-      this.setState({
-         time: time,
-         timer: {
-            h: (updatedTime.h < 10) ? "0" + updatedTime.h : updatedTime.h,
-            m: (updatedTime.m < 10) ? "0" + updatedTime.m : updatedTime.m,
-            s: (updatedTime.s < 10) ? "0" + updatedTime.s : updatedTime.s
-         }
-      });
-   };
 
    private stopTimer = () => {
       this.setState({
@@ -180,7 +163,7 @@ class Timer extends Component<any, any> {
 
    private toggleTimer = () => (this.state.isOn) ? this.stopTimer() : this.runTimer();
 
-   private changeTime = (timeSegment = "", varyDirection = "") => {
+   private changeTime = (timeSegment = "", direction = "") => {
       if (this.state.start) {
          return;
       }
@@ -188,9 +171,9 @@ class Timer extends Component<any, any> {
       let changeTime = +this.state.time;
       let vary = 0;
 
-      if (varyDirection === CHANGE_TIME.up) {
+      if (direction === TIME_TURN.up) {
          vary = 1;
-      } else if (varyDirection === CHANGE_TIME.down) {
+      } else if (direction === TIME_TURN.down) {
          vary = -1;
       }
 
@@ -203,7 +186,7 @@ class Timer extends Component<any, any> {
       }
 
       if (changeTime >= 0) {
-         this.updateTimer(changeTime);
+         this.setState({time: changeTime}); // TODO: move 'time' to REDUX
       }
    };
 }

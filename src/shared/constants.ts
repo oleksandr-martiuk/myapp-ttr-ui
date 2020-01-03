@@ -17,7 +17,7 @@ export const INTERVAL = {
    }
 };
 
-export const CHANGE_TIME = {
+export const TIME_TURN = {
    up: 'up',
    down: 'down'
 };
