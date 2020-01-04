@@ -7,6 +7,8 @@ import {INTERVAL as _I, TIME_TURN, env} from "../../../shared/constants";
 import {connect} from "react-redux";
 import {createSession, getLastSession, updateSession} from "../redux/Session/session.services";
 import {formatTime} from "../../../shared/pipes/format-time.pipe";
+import {updateTimeAction} from "../redux/Time/time.actions";
+import {ITime} from "../redux/Time/types/time";
 
 const styles = (theme: Theme) => ({
    buttonBlock: {
@@ -51,18 +53,12 @@ class Timer extends Component<any, any> {
       super(props);
       this.state = {
          start: 0,
-         time: 0, // TODO: move 'time' to REDUX
+         // time: 0, // TODO: move 'time' to REDUX
          isOn: false,
          btnName: 'Start',
          timer: { h: 0, m: 0, s: 0 }
       };
-   }
-
-   // TODO: move 'time' to REDUX
-   public componentDidMount(): void {
       this.props.onGetLastSession()
-      // .then(() => this.updateTimer(this.props.session.time))
-      ;
    }
 
    public render() {
@@ -93,11 +89,11 @@ class Timer extends Component<any, any> {
 
                <Grid container>
                   <Grid item xs={2} className={classes.digits}></Grid>
-                  <Grid item xs={2} className={classes.digits}>{formatTime(this.state.time).hour}</Grid>
+                  <Grid item xs={2} className={classes.digits}>{formatTime(this.props.time).hour}</Grid>
                   <Grid item xs={1} className={classes.digits}>:</Grid>
-                  <Grid item xs={2} className={classes.digits}>{formatTime(this.state.time).minute}</Grid>
+                  <Grid item xs={2} className={classes.digits}>{formatTime(this.props.time).minute}</Grid>
                   <Grid item xs={1} className={classes.digits}>:</Grid>
-                  <Grid item xs={2} className={classes.digits}>{formatTime(this.state.time).second}</Grid>
+                  <Grid item xs={2} className={classes.digits}>{formatTime(this.props.time).second}</Grid>
                   <Grid item xs={2} className={classes.digits}></Grid>
                </Grid>
 
@@ -132,8 +128,10 @@ class Timer extends Component<any, any> {
 
    private runTimer = () => {
       console.log('runTimer: this.props.session = ', this.props.session);
+      console.log('runTimer: this.props.time = ', this.props.time);
+      console.log('----------------------------------------------------');
       this.setState({
-         start: Date.now() + this.state.time, // TODO: move 'time' to REDUX
+         start: Date.now() + this.props.time,
          isOn: true,
          btnName: 'Stop',
       });
@@ -145,11 +143,11 @@ class Timer extends Component<any, any> {
    };
 
    private updateSessionTime (time: number): void {
-      console.log('updateSessionTime ===> this.props.session.time: ', this.props.session.time);
+      // console.log('updateSessionTime ===> this.props.session.time: ', this.props.session.time);
 
-      if (this.props.session.time - this.state.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
+      if (this.props.session.time - this.props.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
          this.setState({time: time}); // TODO: move 'time' to REDUX
-         this.props.onUpdateSession(this.props.session.id, {time: this.state.time});
+         this.props.onUpdateSession(this.props.session.id, {time: this.props.time});
       }
    }
 
@@ -168,37 +166,38 @@ class Timer extends Component<any, any> {
          return;
       }
 
-      let changeTime = +this.state.time;
       let vary = 0;
-
       if (direction === TIME_TURN.up) {
          vary = 1;
       } else if (direction === TIME_TURN.down) {
          vary = -1;
       }
 
+      let updatedTime = this.props.time;
       if (timeSegment === _I.h.name) {
-         changeTime += vary * (_I.m.max * _I.s.max * _I.ms.max);
+         updatedTime += vary * (_I.m.max * _I.s.max * _I.ms.max);
       } else if (timeSegment === _I.m.name) {
-         changeTime += vary * (_I.s.max * _I.ms.max);
+         updatedTime += vary * (_I.s.max * _I.ms.max);
       } else if (timeSegment === _I.s.name) {
-         changeTime += vary * _I.ms.max;
+         updatedTime += vary * _I.ms.max;
       }
 
-      if (changeTime >= 0) {
-         this.setState({time: changeTime}); // TODO: move 'time' to REDUX
+      if (updatedTime >= 0) {
+         this.props.onUpdateTime({time: updatedTime});
       }
    };
 }
 
 const mapStateToProps = (state: any) => ({
-   session: state.sessionReducers.session
+   session: state.sessionState.session,
+   time: state.timeState.time
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
    onCreateSession: (sessionOptions: any) => createSession(dispatch, sessionOptions),
    onGetLastSession: () => getLastSession(dispatch),
    onUpdateSession: (id: string, updateSessionFields: any) => updateSession(dispatch, id, updateSessionFields),
+   onUpdateTime: (time: ITime) => dispatch(updateTimeAction(time))
 });
 
 export default connect (

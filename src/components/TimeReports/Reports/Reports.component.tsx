@@ -73,7 +73,7 @@ class Reports extends Component<any, any> {
 
    componentDidMount(): void {
       this.props.onGetLastSession()
-         .then((sessionAction: any) => this.props.onReadReports(sessionAction.payload.id));
+          .then((sessionAction: any) => this.props.onReadReports(sessionAction.payload.id));
    }
 
    public render () {
@@ -146,8 +146,8 @@ class Reports extends Component<any, any> {
 }
 
 const mapStateToProps = (state: any) => ({
-   reports: state.reportsReducers.reports || [],
-   session: state.sessionReducers.session || null
+   reports: state.reportState.reports,
+   session: state.sessionState.session
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
