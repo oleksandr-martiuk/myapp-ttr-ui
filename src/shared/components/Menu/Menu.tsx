@@ -8,6 +8,7 @@ import {ITime} from "../../../components/TimeReports/redux/Time/types/time";
 import {updateTimeAction} from "../../../components/TimeReports/redux/Time/time.actions";
 import {withStyles} from "@material-ui/styles";
 import {Theme} from "@material-ui/core/styles";
+import {readReports} from "../../../components/TimeReports/redux/Reports/reports.services";
 
 const menuBtnImg = require('../../images/menu_btn.png');
 
@@ -109,6 +110,7 @@ class Menu extends Component<any, any> {
          this.props
             .onCreateSession(sessionOptions)
             .then(() => this.props.onGetLastSession())
+            .then(() => this.props.onReadReports(this.props.session.id))
             .then(() => this.props.onUpdateTime(this.props.session.time));
       }
    }
@@ -119,8 +121,9 @@ const mapStateToProps = (state: any) => ({
 });
 const mapDispatchToProps = (dispatch: any) => ({
    onCreateSession: (sessionOptions: ISessionOptions) => createSession(dispatch, sessionOptions),
-   onUpdateTime: (time: ITime) => dispatch(updateTimeAction(time)),
-   onGetLastSession: () => getLastSession(dispatch)
+   onGetLastSession: () => getLastSession(dispatch),
+   onReadReports: (sessionId: string) => readReports(dispatch, sessionId),
+   onUpdateTime: (time: ITime) => dispatch(updateTimeAction(time))
 });
 
 export default connect (

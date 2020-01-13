@@ -149,13 +149,13 @@ class Timer extends Component<any, any> {
       this.timer = setInterval(() => {
          const time = this.state.start - Date.now();
          this.props.onUpdateTime(time);
-         this.updateSessionTime();
+         this.updateSessionTime(time);
       }, 1000);
    };
 
-   private updateSessionTime (): void {
-      if (this.props.session.time - this.props.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
-         this.props.onUpdateSession(this.props.session.id, {time: this.props.time});
+   private updateSessionTime (time: number): void {
+      if (this.props.session.time - time >= env.REACT_APP_SESSION_UPDATE_TIME) {
+         this.props.onUpdateSession(this.props.session.id, {time});
       }
    }
 
@@ -169,7 +169,7 @@ class Timer extends Component<any, any> {
    };
 
    private changeTime = (timeSegment = "", direction = "") => {
-      if (this.state.start) {
+      if (this.props.session.isStarted) {
          return;
       }
 
