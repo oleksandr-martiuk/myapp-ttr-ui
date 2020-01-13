@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { withStyles } from '@material-ui/styles';
+import {withStyles} from '@material-ui/styles';
 import {Button, Grid} from '@material-ui/core';
-import { Theme } from '@material-ui/core/styles';
-import { ExpandMore, ExpandLess } from "@material-ui/icons";
+import {Theme } from '@material-ui/core/styles';
+import {ExpandMore, ExpandLess} from "@material-ui/icons";
 import {INTERVAL as _I, TIME_TURN, env} from "../../../shared/constants";
 import {connect} from "react-redux";
 import {createSession, getLastSession, updateSession} from "../redux/Session/session.services";
@@ -61,7 +61,11 @@ class Timer extends Component<any, any> {
    componentDidMount(): void {
       this.props
          .onGetLastSession()
-         .then(() => this.props.onUpdateTime(this.props.session.time))
+         .then(() => {
+            this.props.onUpdateTime(this.props.session.time);
+            this.props.onUpdateSession(this.props.session.id, {isRunning: false});
+         })
+         .then(() => this.props.onGetLastSession());
    }
 
    public render() {
@@ -132,6 +136,8 @@ class Timer extends Component<any, any> {
    private toggleTimer = () => (this.state.isRunning) ? this.stopTimer() : this.runTimer();
 
    private runTimer = () => {
+      this.props.onUpdateSession(this.props.session.id, {isRunning: true});
+
       if (!this.props.session.isStarted) {
          this.props.onUpdateSession(this.props.session.id, {isStarted: true});
       }
@@ -142,10 +148,8 @@ class Timer extends Component<any, any> {
       });
       this.timer = setInterval(() => {
          const time = this.state.start - Date.now();
-         // const time = this.props.time + 1000; // TODO: timer 'run ahead'
          this.props.onUpdateTime(time);
          this.updateSessionTime();
-         console.log('-------------------------------------');
       }, 1000);
    };
 
@@ -156,6 +160,7 @@ class Timer extends Component<any, any> {
    }
 
    private stopTimer = () => {
+      this.props.onUpdateSession(this.props.session.id, {isRunning: false});
       this.setState({
          isRunning: false,
          btnName: 'Start',
@@ -185,7 +190,7 @@ class Timer extends Component<any, any> {
       }
 
       if (updatedTime >= 0) {
-         this.props.onUpdateTime({time: updatedTime});
+         this.props.onUpdateTime(updatedTime);
       }
    };
 }

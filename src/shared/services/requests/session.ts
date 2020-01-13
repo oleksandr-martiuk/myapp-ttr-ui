@@ -13,7 +13,7 @@ export class Session extends GraphQlService {
 
    constructor() {
       super();
-      this.sessionFields = ['id', 'time', 'noteTime', 'isStarted'];
+      this.sessionFields = ['id', 'time', 'noteTime', 'isStarted', 'isRunning'];
    }
 
    public async createSession (params: ISessionOptions): Promise<ISession> {

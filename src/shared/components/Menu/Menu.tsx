@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {createSession} from "../../../components/TimeReports/redux/Session/session.services";
+import {createSession, getLastSession} from "../../../components/TimeReports/redux/Session/session.services";
 import {ISessionOptions} from "../../services/requests/session";
 import {styled} from "@material-ui/core";
 import {IMenuItem} from "./types/menu-item";
 import {MENU_ITEMS} from "../../constants";
+import {ITime} from "../../../components/TimeReports/redux/Time/types/time";
+import {updateTimeAction} from "../../../components/TimeReports/redux/Time/time.actions";
 
 const menuBtnImg = require('../../images/menu_btn.png');
 
@@ -73,11 +75,17 @@ class Menu extends Component<any, any> {
             <MenuButton onClick={this.handleClick}/>
             {(this.state.onWindowShow)
                ? <MenuWindow>
-                     {this.state.items.map((item: IMenuItem, index: number) =>
-                        <MenuItem key={item.key} onClick={() => this.handleItemClick(item.key)}>
-                           {item.value}
-                        </MenuItem>
-                     )}
+                     {this.state.items.map((item: IMenuItem, index: number) => {
+                        if (item.key === 'createSession' && this.props.session.isRunning) {
+                           console.log('MenuWindow: ', MenuWindow); // TODO: remove such log
+                           return null;
+                        }
+                        return (
+                           <MenuItem key={item.key} onClick={() => this.handleItemClick(item.key)}>
+                              {item.value}
+                           </MenuItem>
+                        );
+                     })}
                  </MenuWindow>
                : null
             }
@@ -96,16 +104,24 @@ class Menu extends Component<any, any> {
             noteTime: process.env.REACT_APP_NOTE_TIME
          };
 
-         this.props.onCreateSession(sessionOptions);
+         this.props
+            .onCreateSession(sessionOptions)
+            .then(() => this.props.onGetLastSession())
+            .then(() => this.props.onUpdateTime(this.props.session.time));
       }
    }
 }
 
+const mapStateToProps = (state: any) => ({
+   session: state.sessionState.session
+});
 const mapDispatchToProps = (dispatch: any) => ({
    onCreateSession: (sessionOptions: ISessionOptions) => createSession(dispatch, sessionOptions),
+   onUpdateTime: (time: ITime) => dispatch(updateTimeAction(time)),
+   onGetLastSession: () => getLastSession(dispatch)
 });
 
 export default connect (
-   null,
+   mapStateToProps,
    mapDispatchToProps
 )(Menu);

@@ -5,9 +5,7 @@ interface ITimeAction {
    payload: number;
 }
 
-const initialState = {
-   time: 0
-};
+const initialState = 0;
 
 const timeReducers = (state = initialState, action: ITimeAction) => {
    switch (action.type) {
