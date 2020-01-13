@@ -67,8 +67,8 @@ class Timer extends Component<any, any> {
    public render() {
       // styles
       const { classes } = this.props;
+      const arrowStyle = (this.props.session && this.props.session.isStarted) ? classes.arrowDisabled : classes.arrow;
       const btnTextColor = (this.state.btnName === 'Start') ? "#60daaa" : "#B00020";
-      const arrowStyle = (this.state.start) ? classes.arrowDisabled : classes.arrow;
 
       return (
          <div>
@@ -129,7 +129,12 @@ class Timer extends Component<any, any> {
       );
    }
 
+   private toggleTimer = () => (this.state.isRunning) ? this.stopTimer() : this.runTimer();
+
    private runTimer = () => {
+      if (!this.props.session.isStarted) {
+         this.props.onUpdateSession(this.props.session.id, {isStarted: true});
+      }
       this.setState({
          start: Date.now() + this.props.time,
          isRunning: true,
@@ -137,12 +142,14 @@ class Timer extends Component<any, any> {
       });
       this.timer = setInterval(() => {
          const time = this.state.start - Date.now();
-         this.updateSessionTime(time);
+         // const time = this.props.time + 1000; // TODO: timer 'run ahead'
          this.props.onUpdateTime(time);
+         this.updateSessionTime();
+         console.log('-------------------------------------');
       }, 1000);
    };
 
-   private updateSessionTime (time: number): void {
+   private updateSessionTime (): void {
       if (this.props.session.time - this.props.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
          this.props.onUpdateSession(this.props.session.id, {time: this.props.time});
       }
@@ -155,8 +162,6 @@ class Timer extends Component<any, any> {
       });
       clearInterval(this.timer);
    };
-
-   private toggleTimer = () => (this.state.isRunning) ? this.stopTimer() : this.runTimer();
 
    private changeTime = (timeSegment = "", direction = "") => {
       if (this.state.start) {
