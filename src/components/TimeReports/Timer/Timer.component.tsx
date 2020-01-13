@@ -139,8 +139,12 @@ class Timer extends Component<any, any> {
       this.props.onUpdateSession(this.props.session.id, {isRunning: true});
 
       if (!this.props.session.isStarted) {
-         this.props.onUpdateSession(this.props.session.id, {isStarted: true});
+         this.props.onUpdateSession(this.props.session.id, {
+            time: this.props.time,
+            isStarted: true
+         });
       }
+
       this.setState({
          start: Date.now() + this.props.time,
          isRunning: true,
