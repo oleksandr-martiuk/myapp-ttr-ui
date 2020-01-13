@@ -52,7 +52,7 @@ class Timer extends Component<any, any> {
       super(props);
       this.state = {
          start: 0,
-         isOn: false,
+         isRunning: false,
          btnName: 'Start',
          timer: { h: 0, m: 0, s: 0 }
       };
@@ -132,7 +132,7 @@ class Timer extends Component<any, any> {
    private runTimer = () => {
       this.setState({
          start: Date.now() + this.props.time,
-         isOn: true,
+         isRunning: true,
          btnName: 'Stop',
       });
       this.timer = setInterval(() => {
@@ -150,13 +150,13 @@ class Timer extends Component<any, any> {
 
    private stopTimer = () => {
       this.setState({
-         isOn: false,
+         isRunning: false,
          btnName: 'Start',
       });
       clearInterval(this.timer);
    };
 
-   private toggleTimer = () => (this.state.isOn) ? this.stopTimer() : this.runTimer();
+   private toggleTimer = () => (this.state.isRunning) ? this.stopTimer() : this.runTimer();
 
    private changeTime = (timeSegment = "", direction = "") => {
       if (this.state.start) {
