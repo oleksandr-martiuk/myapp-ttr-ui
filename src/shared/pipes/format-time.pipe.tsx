@@ -9,6 +9,7 @@ interface ITimeSegments {
 const doubleDigit = (digit: number): string => (digit < 10) ? "0" + digit : "" + digit;
 
 export const formatTime = (time: number): ITimeSegments => {
+   // console.log('formatTime ---> time = ', time);
    const timer: {[index: string]:any} = {
       h: Math.trunc(moment.duration(time).asHours()),
       m: moment.duration(time).minutes(),

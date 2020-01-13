@@ -48,17 +48,20 @@ const styles = (theme: Theme) => ({
 
 class Timer extends Component<any, any> {
    public timer: any;
-
    constructor(readonly props: any) {
       super(props);
       this.state = {
          start: 0,
-         // time: 0, // TODO: move 'time' to REDUX
          isOn: false,
          btnName: 'Start',
          timer: { h: 0, m: 0, s: 0 }
       };
-      this.props.onGetLastSession()
+   }
+
+   componentDidMount(): void {
+      this.props
+         .onGetLastSession()
+         .then(() => this.props.onUpdateTime(this.props.session.time))
    }
 
    public render() {
@@ -127,9 +130,6 @@ class Timer extends Component<any, any> {
    }
 
    private runTimer = () => {
-      console.log('runTimer: this.props.session = ', this.props.session);
-      console.log('runTimer: this.props.time = ', this.props.time);
-      console.log('----------------------------------------------------');
       this.setState({
          start: Date.now() + this.props.time,
          isOn: true,
@@ -138,15 +138,12 @@ class Timer extends Component<any, any> {
       this.timer = setInterval(() => {
          const time = this.state.start - Date.now();
          this.updateSessionTime(time);
-         this.setState({ time });
+         this.props.onUpdateTime(time);
       }, 1000);
    };
 
    private updateSessionTime (time: number): void {
-      // console.log('updateSessionTime ===> this.props.session.time: ', this.props.session.time);
-
       if (this.props.session.time - this.props.time >= env.REACT_APP_SESSION_UPDATE_TIME) {
-         this.setState({time: time}); // TODO: move 'time' to REDUX
          this.props.onUpdateSession(this.props.session.id, {time: this.props.time});
       }
    }
@@ -190,7 +187,7 @@ class Timer extends Component<any, any> {
 
 const mapStateToProps = (state: any) => ({
    session: state.sessionState.session,
-   time: state.timeState.time
+   time: state.timeState
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
