@@ -8,7 +8,7 @@
 .env
 
 # packaged app
-/TTT-win32-x64
+/TTR-win32-x64
 
 # build
 /build
