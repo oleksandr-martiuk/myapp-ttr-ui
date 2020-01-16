@@ -9,11 +9,10 @@ import App from "./components/App";
 import './shared/styles/main.css'
 
 const initialState = {};
-const store = configureStore(initialState); // TODO: REDUX store
+const store = configureStore(initialState);
 
 const MOUNT_NODE = document.getElementById('root');
 
-// TODO: with REDUX
 ReactDOM.render(
    <Provider store={store}>
       <Router>
@@ -22,8 +21,3 @@ ReactDOM.render(
    </Provider>,
    MOUNT_NODE
 );
-
-// ReactDOM.render(
-//    <App/>,
-//    MOUNT_NODE
-// );
